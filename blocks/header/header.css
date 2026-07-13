@@ -51,8 +51,7 @@ header .nav-sections {
   display: none;
 }
 
-header nav[aria-expanded="true"] .nav-sections,
-header .nav-sections.nav-sections {
+header nav[aria-expanded="true"] .nav-sections {
   display: block;
 }
 
@@ -130,7 +129,7 @@ header .nav-hamburger-icon::after {
   }
 
   header nav[aria-expanded="true"] {
-    grid-template-columns: auto 1fr auto;
+    grid-template: auto / auto 1fr auto;
     min-height: unset;
     overflow-y: visible;
   }
