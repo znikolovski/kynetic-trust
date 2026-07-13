@@ -19,7 +19,11 @@
 }
 
 @media (width >= 900px) {
-  .offer-card-large { grid-column: span 8; }
+  .offer-card-large {
+    grid-column: span 8;
+    grid-row: span 2;
+  }
+
   .offer-card-small { grid-column: span 4; }
   .offer-card-wide { grid-column: span 12; }
 }

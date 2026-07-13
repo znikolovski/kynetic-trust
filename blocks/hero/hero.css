@@ -28,7 +28,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, var(--color-obsidian) 28%, transparent 65%);
+  background: linear-gradient(to right, var(--color-obsidian) 35%, transparent 70%);
   pointer-events: none;
 }
 
@@ -38,6 +38,22 @@
   height: 100%;
   object-fit: contain;
   object-position: right center;
+}
+
+@media (width >= 900px) {
+  .hero-media {
+    inset: 0 0 0 42%;
+  }
+
+  .hero-media::after {
+    background: linear-gradient(to right, var(--color-obsidian) 0%, transparent 28%);
+  }
+
+  .hero-media picture,
+  .hero-media img {
+    object-fit: cover;
+    object-position: left center;
+  }
 }
 
 .hero-content {

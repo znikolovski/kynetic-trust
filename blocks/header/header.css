@@ -141,6 +141,7 @@ header .nav-hamburger-icon::after {
   header .nav-sections,
   header nav[aria-expanded="true"] .nav-sections {
     display: flex;
+    grid-area: auto;
     justify-self: center;
   }
 

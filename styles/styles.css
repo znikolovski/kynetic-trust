@@ -358,3 +358,45 @@ main .section.lowest {
 main .section.divider {
   border-top: 1px solid var(--border-color);
 }
+
+/* "Popular offers" section: heading and description side by side at desktop */
+@media (width >= 900px) {
+  .section.offers-intro .default-content-wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    column-gap: 64px;
+    margin-bottom: 40px;
+  }
+
+  .section.offers-intro .default-content-wrapper h2 {
+    margin: 0;
+  }
+
+  .section.offers-intro .default-content-wrapper p {
+    margin: 0;
+    font-size: var(--body-font-size-s);
+  }
+}
+
+/* "We made it simple" + CTA side by side at desktop */
+@media (width >= 900px) {
+  .section.features-cta {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    align-items: start;
+    gap: 40px 64px;
+    padding-left: var(--margin-desktop);
+    padding-right: var(--margin-desktop);
+  }
+
+  .section.features-cta > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .section.features-cta > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
