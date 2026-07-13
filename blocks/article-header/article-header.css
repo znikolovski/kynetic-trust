@@ -1,0 +1,107 @@
+.article-header {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.article-header picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.article-header picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.article-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, var(--color-obsidian), transparent 60%);
+}
+
+.article-header-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  padding: 64px var(--margin-mobile);
+}
+
+@media (width >= 900px) {
+  .article-header-overlay {
+    padding: 96px var(--margin-desktop);
+  }
+}
+
+.article-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.article-tag {
+  border: 1px solid rgb(157 5 255 / 30%);
+  background: rgb(157 5 255 / 10%);
+  color: var(--color-secondary);
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-default);
+}
+
+.article-readtime {
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.article-header-copy h1 {
+  font-size: var(--heading-font-size-xxl);
+  line-height: 1.05;
+  margin: 0 0 16px;
+}
+
+.article-header-byline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.article-byline-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid rgb(0 219 233 / 30%);
+}
+
+.article-header .article-byline-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-byline-name {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.article-byline-role {
+  margin: 0;
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}

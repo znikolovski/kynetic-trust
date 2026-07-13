@@ -1,0 +1,91 @@
+name: Widget release (raised by the dashboard repo)
+
+# Triggered by a `repository_dispatch` from kynetic-trust-dashboard's own
+# CI, fired only after that repo has built, deployed, AND smoke-tested a
+# widget change on its own infrastructure (see its
+# .github/workflows/deploy.yml). This workflow does NOT trust that payload
+# blindly — it opens a normal PR here and lets THIS repo's own CI
+# (ci.yml, specifically the widget-preview-check job) independently verify
+# the new version against a real EDS preview before it's allowed to merge.
+#
+# This is the mechanism that satisfies "EDS checks are a dependency of the
+# release, and the two don't ship in isolation": the dashboard's change
+# isn't fully "released" to securbank.com visitors until this PR merges,
+# and this PR can't merge until EDS's own integration check is green.
+
+on:
+  repository_dispatch:
+    types: [widget-release]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  open-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update widgets.json with the proposed release
+        id: update
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const payload = ${{ toJson(github.event.client_payload) }};
+          const path = 'widgets.json';
+          const registry = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+          if (!registry[payload.widget]) {
+            throw new Error(`Unknown widget "${payload.widget}" — add it to widgets.json manually first.`);
+          }
+
+          registry[payload.widget] = {
+            appOrigin: payload.appOrigin,
+            file: payload.file,
+            version: payload.version,
+            sourceCommit: payload.sourceCommit,
+            releasedAt: new Date().toISOString(),
+          };
+
+          fs.writeFileSync(path, JSON.stringify(registry, null, 2) + '\n');
+          NODE
+
+      - name: Open pull request
+        id: pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: widget-release/${{ github.event.client_payload.widget }}-${{ github.event.client_payload.version }}
+          commit-message: "release(widgets): ${{ github.event.client_payload.widget }} ${{ github.event.client_payload.version }}"
+          title: "Release ${{ github.event.client_payload.widget }} ${{ github.event.client_payload.version }}"
+          body: |
+            Automated release PR opened by `kynetic-trust-dashboard`'s deploy
+            workflow after that repo built, deployed, and smoke-tested this
+            widget version on its own infrastructure.
+
+            | | |
+            |---|---|
+            | Widget | `${{ github.event.client_payload.widget }}` |
+            | Version | `${{ github.event.client_payload.version }}` |
+            | Dashboard commit | ${{ github.event.client_payload.sourceCommit }} |
+            | Dashboard deploy | ${{ github.event.client_payload.deployUrl }} |
+            | Dashboard smoke test run | ${{ github.event.client_payload.runUrl }} |
+
+            **This PR will not merge until this repo's own
+            `widget-preview-check` job passes against a live EDS preview of
+            this branch** — that's the integration verification the
+            dashboard's own smoke test can't provide on its own, since it
+            only exercises same-origin loading. See ARCHITECTURE.md §3.5.
+          labels: automated-release,widget
+
+      - name: Enable auto-merge
+        if: steps.pr.outputs.pull-request-number
+        run: gh pr merge --auto --squash "${{ steps.pr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # If branch protection requires a human review, auto-merge simply
+        # waits for that approval in addition to the CI check below — no
+        # change needed here to go from "fully automated" to "reviewed" as
+        # a policy, just a branch-protection setting.

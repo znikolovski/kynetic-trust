@@ -1,0 +1,85 @@
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+}
+
+.offer-card {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  border-radius: var(--radius-xl);
+  transition: border-color 0.3s ease;
+}
+
+.offer-card:hover {
+  border-color: rgb(0 219 233 / 35%);
+}
+
+@media (width >= 900px) {
+  .offer-card-large { grid-column: span 8; }
+  .offer-card-small { grid-column: span 4; }
+  .offer-card-wide { grid-column: span 12; }
+}
+
+.offer-card-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-primary);
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.offer-card h3 {
+  margin: 0 0 24px;
+  max-width: 26ch;
+}
+
+.offer-card p {
+  max-width: 40ch;
+}
+
+.offer-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.offer-card-input-label {
+  display: block;
+  width: 100%;
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.offer-card-actions input[type="email"] {
+  flex: 1 1 220px;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 0;
+  color: var(--color-on-surface);
+  font-size: var(--heading-font-size-s);
+}
+
+.offer-card-actions input[type="email"]:focus {
+  outline: none;
+  border-bottom-color: var(--color-primary);
+}
+
+.offer-card-actions .button-wrapper {
+  margin: 0;
+}

@@ -1,0 +1,93 @@
+.pricing-tiers {
+  display: grid;
+  gap: var(--gutter);
+}
+
+@media (width >= 900px) {
+  .pricing-tiers {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+.tier-card {
+  position: relative;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tier-card-highlight {
+  border-color: rgb(0 219 233 / 40%);
+  box-shadow: var(--cyan-aura);
+}
+
+.tier-card-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary);
+  font-family: var(--mono-font-family);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-default);
+}
+
+.tier-card-eyebrow {
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.tier-card h3 {
+  margin: 0 0 16px;
+  color: var(--color-on-surface);
+}
+
+.tier-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.tier-card-price-value {
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--color-on-surface);
+}
+
+.tier-card-highlight .tier-card-price-value {
+  color: var(--color-primary);
+}
+
+.tier-card-price-period {
+  font-family: var(--mono-font-family);
+  color: var(--color-on-surface-variant);
+}
+
+.tier-card-desc {
+  min-height: 3em;
+  margin-bottom: 32px;
+}
+
+.tier-card .button-wrapper {
+  margin: 0;
+}
+
+.tier-card .button {
+  width: 100%;
+}
+
+.tier-card:not(.tier-card-highlight) .button.primary {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}

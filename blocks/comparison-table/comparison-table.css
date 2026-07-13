@@ -1,0 +1,64 @@
+.comparison-table-scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
+  white-space: nowrap;
+}
+
+.comparison-table thead th {
+  background: rgb(255 255 255 / 5%);
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.comparison-table thead th.comparison-feature-col {
+  font-family: var(--mono-font-family);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.comparison-table tbody th {
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  white-space: normal;
+}
+
+.comparison-table tbody td {
+  text-align: center;
+  color: var(--color-on-surface);
+  font-family: var(--mono-font-family);
+  font-size: var(--body-font-size-s);
+}
+
+.comparison-table tbody tr:hover {
+  background: rgb(255 255 255 / 2%);
+}
+
+.comparison-table tbody tr:last-child th,
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-check {
+  color: var(--color-tertiary);
+  font-size: 18px;
+}
+
+.comparison-dash {
+  color: var(--color-outline);
+}

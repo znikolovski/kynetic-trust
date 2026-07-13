@@ -1,0 +1,95 @@
+name: CI
+
+# Runs on every PR, including the automated release PRs opened by
+# widget-release.yml. `widget-preview-check` is the job that makes EDS
+# checks a real dependency of a widget release: it loads THIS PR's actual
+# aem.live preview deployment and verifies the pinned widget genuinely
+# mounts there — a real cross-origin load against the dashboard's
+# production API, not a same-origin dev check. A release PR cannot merge
+# (auto-merge or otherwise) while this job is red.
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  widget-preview-check:
+    # Only meaningful for PRs that actually touch widgets.json — running it
+    # on every content/copy PR would just add latency for no reason.
+    if: contains(github.event.pull_request.title, 'Release') || contains(github.event.pull_request.labels.*.name, 'widget')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Wait for the aem.live preview to be ready
+        id: preview
+        run: |
+          slug=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')
+          url="https://${slug}--kynetic-trust--znikolovski.aem.page/compare"
+          echo "Preview URL: $url"
+          for i in $(seq 1 20); do
+            status=$(curl -s -o /dev/null -w '%{http_code}' "$url" || echo 000)
+            [ "$status" = "200" ] && break
+            echo "Attempt $i: preview not ready yet ($status), waiting 15s…"
+            sleep 15
+          done
+          if [ "$status" != "200" ]; then
+            echo "Preview never became available at $url"; exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the pinned widget mounts on the real preview page
+        run: node test/widget-preview.mjs "${{ steps.preview.outputs.url }}"
+
+      # Two separate steps (rather than one computing pass/fail inline) so
+      # each uses GitHub Actions' own success()/failure() job-status
+      # functions correctly — this is what actually reports back onto the
+      # dashboard repo's commit, closing the loop so the two pipelines
+      # aren't releasing in isolation.
+      - name: Report success back to the dashboard repo
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.DASHBOARD_REPO_TOKEN }}
+        run: |
+          sha="$(node -pe "require('./widgets.json')['comparison-table'].sourceCommit" 2>/dev/null || echo '')"
+          if [ -n "$sha" ] && [ -n "$GH_TOKEN" ]; then
+            gh api "repos/znikolovski/kynetic-trust-dashboard/statuses/$sha" \
+              -f state="success" \
+              -f context="EDS / widget-preview-check" \
+              -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              -f description="EDS preview integration check passed for this widget release"
+          else
+            echo "Skipping cross-repo status report (no sourceCommit or token available)."
+          fi
+
+      - name: Report failure back to the dashboard repo
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.DASHBOARD_REPO_TOKEN }}
+        run: |
+          sha="$(node -pe "require('./widgets.json')['comparison-table'].sourceCommit" 2>/dev/null || echo '')"
+          if [ -n "$sha" ] && [ -n "$GH_TOKEN" ]; then
+            gh api "repos/znikolovski/kynetic-trust-dashboard/statuses/$sha" \
+              -f state="failure" \
+              -f context="EDS / widget-preview-check" \
+              -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              -f description="EDS preview integration check FAILED for this widget release"
+          else
+            echo "Skipping cross-repo status report (no sourceCommit or token available)."
+          fi
