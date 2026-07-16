@@ -25,7 +25,7 @@ export default async function decorate(block) {
   if (brandCol) {
     brandCol.querySelectorAll('img').forEach((el) => el.remove());
     const logoImg = document.createElement('img');
-    logoImg.src = '/icons/securbank-logo.svg';
+    logoImg.src = '/icons/securbank-logo.jpg';
     logoImg.alt = 'SecurBank';
     logoImg.className = 'brand-logo';
     const firstP = brandCol.querySelector('p') ?? brandCol;

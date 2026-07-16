@@ -169,7 +169,7 @@ export default async function decorate(block) {
     // Remove any content-pipeline img (may be sanitized); inject fresh from code bus
     brandLink.querySelectorAll('img').forEach((el) => el.remove());
     const brandImg = document.createElement('img');
-    brandImg.src = '/icons/securbank-logo.svg';
+    brandImg.src = '/icons/securbank-logo.jpg';
     brandImg.alt = 'SecurBank';
     brandImg.className = 'brand-logo';
     brandLink.prepend(brandImg);
