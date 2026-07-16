@@ -43,10 +43,12 @@ header .nav-brand {
 header .nav-brand p {
   margin: 0;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 header .nav-brand .brand-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
   color: var(--color-on-surface);
