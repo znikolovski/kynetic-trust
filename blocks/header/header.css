@@ -94,9 +94,9 @@ header .nav-tools {
   gap: 12px;
 }
 
-/* The nav-tools section has two wrapper divs before the p elements;
-   make the inner content wrapper flex so "Join Now" + "Sign In" sit side by side */
-header .nav-tools > div > div {
+/* EDS wraps plain-text section content in a single default-content-wrapper;
+   make that wrapper flex so "Join Now" + "Sign In" sit side by side */
+header .nav-tools > div {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -224,8 +224,9 @@ header .nav-hamburger-icon::after {
 
 #sb-login-modal::backdrop {
   background: rgb(0 0 0 / 75%);
-  backdrop-filter: blur(12px);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .login-modal-inner {
@@ -314,17 +315,17 @@ header .nav-hamburger-icon::after {
   color: var(--color-outline);
 }
 
-.login-credentials-card input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgb(0 219 233 / 12%);
-}
-
 .login-password-wrapper {
   position: relative;
 }
 
 .login-password-wrapper input {
   padding-right: 44px;
+}
+
+.login-credentials-card input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(0 219 233 / 12%);
 }
 
 .login-eye-toggle {
