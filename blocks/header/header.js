@@ -164,11 +164,16 @@ export default async function decorate(block) {
 
   const navBrand = nav.querySelector('.nav-brand');
   const brandLink = navBrand ? navBrand.querySelector('a') : null;
-  if (brandLink) brandLink.className = 'brand-link';
-
-  // Style brand logo image
-  const brandImg = navBrand?.querySelector('img');
-  if (brandImg) brandImg.className = 'brand-logo';
+  if (brandLink) {
+    brandLink.className = 'brand-link';
+    // Remove any content-pipeline img (may be sanitized); inject fresh from code bus
+    brandLink.querySelectorAll('img').forEach((el) => el.remove());
+    const brandImg = document.createElement('img');
+    brandImg.src = '/icons/securbank-logo.svg';
+    brandImg.alt = 'SecurBank';
+    brandImg.className = 'brand-logo';
+    brandLink.prepend(brandImg);
+  }
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {

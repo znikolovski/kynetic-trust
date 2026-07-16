@@ -20,5 +20,17 @@ export default async function decorate(block) {
     if (col) col.classList.add(`footer-${c}`);
   });
 
+  // Inject logo from code bus — bypasses content-pipeline img sanitization
+  const brandCol = footer.querySelector('.footer-brand');
+  if (brandCol) {
+    brandCol.querySelectorAll('img').forEach((el) => el.remove());
+    const logoImg = document.createElement('img');
+    logoImg.src = '/icons/securbank-logo.svg';
+    logoImg.alt = 'SecurBank';
+    logoImg.className = 'brand-logo';
+    const firstP = brandCol.querySelector('p') ?? brandCol;
+    firstP.prepend(logoImg);
+  }
+
   block.append(footer);
 }
