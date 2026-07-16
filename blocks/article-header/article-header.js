@@ -12,12 +12,17 @@ export default function decorate(block) {
   byline.className = 'article-header-byline';
 
   rows.forEach((row) => {
-    const picture = row.querySelector('picture');
-    if (picture) {
-      block.append(picture);
+    const cells = [...row.children];
+
+    // Background hero image: first single-cell row with an image, before copy is populated
+    const bgMedia = cells.length === 1 && !copy.children.length
+      ? (row.querySelector('picture') ?? row.querySelector('img'))
+      : null;
+    if (bgMedia) {
+      block.append(bgMedia);
       return;
     }
-    const cells = [...row.children];
+
     if (cells.length === 2 && cells.every((c) => !c.querySelector('img')) && !row.querySelector('h1, h2')) {
       const [tagCell, timeCell] = cells;
       if (tagCell.textContent.trim() && !copy.children.length) {
@@ -35,7 +40,7 @@ export default function decorate(block) {
     if (cells.length === 1 && cells[0].querySelector('img')) {
       const avatar = document.createElement('div');
       avatar.className = 'article-byline-avatar';
-      avatar.append(cells[0].querySelector('picture') || cells[0].querySelector('img'));
+      avatar.append(cells[0].querySelector('picture') ?? cells[0].querySelector('img'));
       byline.prepend(avatar);
       return;
     }

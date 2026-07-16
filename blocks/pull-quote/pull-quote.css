@@ -1,17 +1,43 @@
 .pull-quote {
   position: relative;
-  padding: 32px 0 32px 32px;
+  padding: 40px 40px 32px 48px;
   margin: 48px 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-left: 4px solid var(--color-primary);
-  background: rgb(255 255 255 / 2%);
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+/* Large decorative opening quotation mark */
+.pull-quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  font-size: 100px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  font-weight: 900;
+  color: var(--color-primary);
+  opacity: 0.25;
+  pointer-events: none;
+  user-select: none;
 }
 
 .pull-quote h2 {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   color: var(--color-primary);
   font-style: italic;
-  line-height: 1.2;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* em-dash prefix on attribution */
+.pull-quote cite::before {
+  content: '\2014\00A0';
 }
 
 .pull-quote cite {

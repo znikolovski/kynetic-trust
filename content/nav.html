@@ -1,30 +1,30 @@
 <!--
   DA-authorable content for /nav (referenced by blocks/header/header.js).
-  Paste this into da.live as the "nav" document at the site root, or use the
-  da-content / da-auth skills to PUT it via the admin.da.live Source API.
-  Three sections = brand / primary links / CTA button (see header.js).
+  Three sections = brand / primary links / CTA buttons.
+  The "Sign In" link's href (/login) is the no-JS fallback; header.js
+  intercepts the click and fires sb-login-open to open the login modal instead.
 -->
 <body>
   <header></header>
   <main>
     <div>
       <div>
-        <p><a href="/">SECURBANK</a></p>
+        <p><a href="/"><img src="/icons/securbank-logo.jpg" alt="SecurBank"> SecurBank</a></p>
       </div>
     </div>
     <div>
       <div>
         <ul>
-          <li><a href="/accounts-savings">Accounts</a></li>
+          <li><a href="/accounts-savings">Savings</a></li>
           <li><a href="/mortgages">Mortgages</a></li>
           <li><a href="/credit-cards">Cards</a></li>
-          <li><a href="/accounts-savings#savings">Savings</a></li>
         </ul>
       </div>
     </div>
     <div>
       <div>
-        <p><strong><a href="/join">Join Now</a></strong></p>
+        <p><strong><a href="/register">Join Now</a></strong></p>
+        <p><a href="/login">Sign In</a></p>
       </div>
     </div>
   </main>

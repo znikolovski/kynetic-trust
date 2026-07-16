@@ -113,8 +113,7 @@ function decorateButtons(main) {
     const p = a.closest('p');
     const text = a.textContent.trim();
 
-    // quick structural checks
-    if (a.querySelector('img') || p.textContent.trim() !== text) return;
+    if (a.querySelector('img')) return;
 
     // skip URL display links
     try {
@@ -125,6 +124,10 @@ function decorateButtons(main) {
     const strong = a.closest('strong');
     const em = a.closest('em');
     if (!strong && !em) return;
+
+    // skip inline links — the <strong>/<em> wrapper must contain only this link
+    const wrapper = strong || em;
+    if (wrapper.textContent.trim() !== text) return;
 
     p.className = 'button-wrapper';
     a.className = 'button';

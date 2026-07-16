@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 240" role="img" aria-label="SecurBank Infinite credit card">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c2035"/>
+      <stop offset="50%" stop-color="#111520"/>
+      <stop offset="100%" stop-color="#0a0c14"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#8b6f3a" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Card body -->
+  <rect width="380" height="240" rx="16" fill="url(#cardBg)"/>
+  <rect width="380" height="240" rx="16" fill="url(#sheen)"/>
+  <!-- Border -->
+  <rect x="0.75" y="0.75" width="378.5" height="238.5" rx="15.5" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+
+  <!-- SECURBANK brand name -->
+  <text x="354" y="34" font-family="system-ui,-apple-system,BlinkMacSystemFont,sans-serif" font-size="11.5" font-weight="700" letter-spacing="3.5" fill="rgba(255,255,255,0.82)" text-anchor="end">SECURBANK</text>
+
+  <!-- Contactless / NFC icon (top-left) — three arcs + dot -->
+  <g transform="translate(28,28)">
+    <circle cx="0" cy="14" r="2.5" fill="#00dbe9" opacity="0.85"/>
+    <path d="M5,20 A10,10,0,0,0,5,8" fill="none" stroke="#00dbe9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M11,24 A18,18,0,0,0,11,4" fill="none" stroke="#00dbe9" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+    <path d="M17,28 A26,26,0,0,0,17,0" fill="none" stroke="#00dbe9" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  </g>
+
+  <!-- EMV Chip -->
+  <rect x="28" y="78" width="48" height="36" rx="6" fill="url(#chipGrad)"/>
+  <rect x="28.75" y="78.75" width="46.5" height="34.5" rx="5.5" fill="none" stroke="rgba(200,169,110,0.35)" stroke-width="1"/>
+  <!-- chip contact lines -->
+  <line x1="29" y1="89" x2="76" y2="89" stroke="rgba(200,169,110,0.25)" stroke-width="0.75"/>
+  <line x1="29" y1="100" x2="76" y2="100" stroke="rgba(200,169,110,0.25)" stroke-width="0.75"/>
+  <line x1="52" y1="79" x2="52" y2="114" stroke="rgba(200,169,110,0.25)" stroke-width="0.75"/>
+
+  <!-- Card number -->
+  <text font-family="'Courier New',Courier,monospace" font-size="17" letter-spacing="2.5" fill="rgba(255,255,255,0.82)">
+    <tspan x="28" y="154">4200</tspan>
+    <tspan dx="10">8821</tspan>
+    <tspan dx="10">9901</tspan>
+    <tspan dx="10">0012</tspan>
+  </text>
+
+  <!-- Card holder -->
+  <text x="28" y="186" font-family="system-ui,sans-serif" font-size="8.5" letter-spacing="2" fill="rgba(255,255,255,0.38)">CARD HOLDER</text>
+  <text x="28" y="206" font-family="'Courier New',Courier,monospace" font-size="12.5" letter-spacing="1.5" fill="rgba(255,255,255,0.82)" font-weight="700">ALEXANDER R. VANCE</text>
+
+  <!-- Valid thru -->
+  <text x="305" y="186" font-family="system-ui,sans-serif" font-size="8.5" letter-spacing="2" fill="rgba(255,255,255,0.38)" text-anchor="end">VALID THRU</text>
+  <text x="314" y="206" font-family="'Courier New',Courier,monospace" font-size="12.5" letter-spacing="1.5" fill="rgba(255,255,255,0.82)" font-weight="700" text-anchor="end">12/28</text>
+
+  <!-- Mastercard-style dual circles (network mark, bottom-right) -->
+  <circle cx="336" cy="206" r="15" fill="rgba(235,80,20,0.18)"/>
+  <circle cx="354" cy="206" r="15" fill="rgba(255,180,0,0.12)"/>
+  <path d="M345,195 A15,15,0,0,1,345,217" fill="rgba(255,130,0,0.12)"/>
+</svg>

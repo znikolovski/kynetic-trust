@@ -15,6 +15,27 @@
   gap: 24px;
 }
 
+/* cards variant: glass surface comes from .glass-card class (set in feature-list.js) */
+.feature-list.cards .feature-list-item {
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px;
+  border-radius: var(--radius-xl); /* overrides glass-card default (--radius-lg) */
+}
+
+@media (width >= 900px) {
+  .feature-list.cards {
+    gap: var(--gutter);
+  }
+}
+
+/* Two-up override: exactly 2 columns at desktop */
+@media (width >= 900px) {
+  .feature-list.two-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .feature-list-icon {
   flex-shrink: 0;
   width: 56px;
@@ -28,9 +49,18 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .feature-list-icon { transition: none; }
+}
+
 .feature-list-icon .icon {
   width: 28px;
   height: 28px;
+  color: var(--color-primary);
+}
+
+.feature-list-icon .material-symbol {
+  font-size: var(--icon-size-large);
   color: var(--color-primary);
 }
 
@@ -38,7 +68,8 @@
   background-color: var(--color-primary-container);
 }
 
-.feature-list-item:hover .feature-list-icon .icon {
+.feature-list-item:hover .feature-list-icon .icon,
+.feature-list-item:hover .feature-list-icon .material-symbol {
   color: var(--color-on-primary);
 }
 
@@ -48,4 +79,41 @@
 
 .feature-list-item p {
   margin: 0;
+}
+
+/* Featured card: cyan glow border */
+.feature-list.cards .feature-list-item-featured {
+  border-color: rgb(0 219 233 / 35%);
+  box-shadow: var(--cyan-aura);
+}
+
+/* Center modifier: center all content in card items */
+.feature-list.cards.center .feature-list-item {
+  align-items: center;
+  text-align: center;
+}
+
+.feature-list.cards.center .feature-list-item h4,
+.feature-list.cards.center .feature-list-item p {
+  text-align: center;
+}
+
+/* Primary accent card (cyan) */
+.feature-list.cards .feature-list-item-primary {
+  border-color: rgb(0 219 233 / 35%);
+  background: rgb(0 219 233 / 4%);
+}
+
+.feature-list.cards .feature-list-item-primary .feature-list-icon .material-symbol {
+  color: var(--color-primary);
+}
+
+/* Secondary accent card (violet) */
+.feature-list.cards .feature-list-item-secondary {
+  border-color: rgb(223 183 255 / 30%);
+  background: rgb(223 183 255 / 4%);
+}
+
+.feature-list.cards .feature-list-item-secondary .feature-list-icon .material-symbol {
+  color: var(--color-secondary);
 }

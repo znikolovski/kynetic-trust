@@ -8,14 +8,37 @@ export default function decorate(block) {
   const wrapper = document.createElement('div');
   wrapper.className = 'cta-inner';
 
+  let headingFound = false;
+  let buttonFound = false;
+  let bgSrc = null;
+
   rows.forEach((row) => {
-    const p = row.querySelector('p');
-    if (p && !row.querySelector('h1, h2, h3') && !row.querySelector('.button-wrapper') && p.textContent.trim().length < 60) {
-      p.classList.add('eyebrow');
+    const pic = row.querySelector('picture, img');
+    if (pic && !row.querySelector('h1, h2, h3, a')) {
+      const imgEl = pic.nodeName === 'PICTURE' ? pic.querySelector('img') : pic;
+      bgSrc = imgEl?.src ?? null;
+      return;
     }
+    if (row.querySelector('h1, h2, h3')) {
+      headingFound = true;
+    } else if (!headingFound && !row.querySelector('.button-wrapper')) {
+      [...row.querySelectorAll('p')].forEach((p) => {
+        if (p.textContent.trim().length < 60) p.classList.add('eyebrow');
+      });
+    }
+    if (buttonFound) {
+      const innerDiv = row.firstElementChild;
+      if (innerDiv) innerDiv.classList.add('cta-footnote');
+    }
+    if (row.querySelector('.button-wrapper')) buttonFound = true;
     wrapper.append(...row.children);
   });
 
   block.textContent = '';
   block.append(wrapper);
+
+  if (bgSrc) {
+    block.classList.add('cta-bg-image');
+    block.style.backgroundImage = `url(${bgSrc})`;
+  }
 }

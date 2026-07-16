@@ -91,3 +91,8 @@
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
 }
+
+.tier-card:last-child:not(.tier-card-highlight) .button.primary {
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}

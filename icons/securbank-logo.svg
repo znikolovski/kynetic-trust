@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 9 30 30" fill="none" aria-label="SecurBank">
+  <!-- Shield-padlock body fill -->
+  <path d="M9 17 Q8 17 8 18 L8 28 Q8 37 20 38 Q32 37 32 28 L32 18 Q32 17 31 17 Z"
+        fill="currentColor" opacity="0.12"/>
+  <!-- Shield-padlock body stroke -->
+  <path d="M9 17 Q8 17 8 18 L8 28 Q8 37 20 38 Q32 37 32 28 L32 18 Q32 17 31 17 Z"
+        stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Shackle arc (semicircle) -->
+  <path d="M14 17 A6 6 0 0 1 26 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <!-- S circuit path: endpoint node at top-left -->
+  <circle cx="16" cy="21" r="1.5" fill="currentColor"/>
+  <!-- Flowing S-curve -->
+  <path d="M16 21 C24 21,24 26,20 27 C16 28,16 33,24 33"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- S circuit path: endpoint node at bottom-right -->
+  <circle cx="24" cy="33" r="1.5" fill="currentColor"/>
+</svg>

@@ -1,0 +1,207 @@
+.mc-card {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+  border-color: rgb(255 255 255 / 12%);
+}
+
+/* Header */
+.mc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mc-header-label {
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.mc-header .material-symbol {
+  color: var(--color-on-surface-variant);
+  font-size: 20px;
+}
+
+/* Home value field */
+.mc-field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.mc-field-label {
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  cursor: default;
+}
+
+.mc-field-value {
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+/* Range slider */
+.mc-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary) var(--pct, 34%),
+    rgb(255 255 255 / 12%) var(--pct, 34%)
+  );
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.mc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-surface-container-low), 0 0 12px rgb(0 219 233 / 50%);
+  cursor: grab;
+  transition: box-shadow 0.15s;
+}
+
+.mc-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  box-shadow: 0 0 0 4px var(--color-surface-container-low), 0 0 20px rgb(0 219 233 / 70%);
+}
+
+.mc-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-surface-container-low), 0 0 12px rgb(0 219 233 / 50%);
+  cursor: grab;
+}
+
+/* Rate / Term tiles */
+.mc-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mc-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  cursor: pointer;
+  background: var(--color-surface-container);
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.mc-tile:hover {
+  border-color: rgb(0 219 233 / 35%);
+  background: var(--color-surface-container-high);
+}
+
+.mc-tile-label {
+  font-family: var(--mono-font-family);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.mc-tile-value {
+  font-family: var(--heading-font-family);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--color-on-surface);
+  line-height: 1;
+  margin: 0;
+}
+
+/* Result display */
+.mc-result {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.mc-result-label {
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.mc-result-value {
+  font-family: var(--heading-font-family);
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--color-on-surface);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+/* CTA */
+.mc-cta:any-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.mc-cta:hover {
+  box-shadow: var(--cyan-aura-hover);
+  text-decoration: none;
+  color: var(--color-on-primary);
+}
+
+.mc-cta:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-slider::-webkit-slider-thumb,
+  .mc-tile,
+  .mc-cta:any-link {
+    transition: none;
+  }
+}

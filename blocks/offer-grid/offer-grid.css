@@ -11,7 +11,16 @@
   justify-content: space-between;
   padding: 32px;
   border-radius: var(--radius-xl);
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offer-card { transition: none; }
+}
+
+.offer-card-large,
+.offer-card-tall {
+  padding: 40px;
 }
 
 .offer-card:hover {
@@ -24,8 +33,18 @@
     grid-row: span 2;
   }
 
+  /* tall: wide card, top-aligned content, 1 grid-row (content height drives the row) */
+  .offer-card-tall {
+    grid-column: span 8;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .offer-card-medium { grid-column: span 6; }
   .offer-card-small { grid-column: span 4; }
   .offer-card-wide { grid-column: span 12; }
+
+  .offer-grid.four-col .offer-card-small { grid-column: span 3; }
 }
 
 .offer-card-eyebrow {
@@ -34,10 +53,14 @@
   gap: 12px;
   color: var(--color-primary);
   font-family: var(--mono-font-family);
-  font-size: 12px;
+  font-size: var(--font-size-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 16px;
+}
+
+.offer-card-eyebrow .material-symbol {
+  font-size: 28px;
 }
 
 .offer-card h3 {
@@ -79,11 +102,170 @@
   font-size: var(--heading-font-size-s);
 }
 
-.offer-card-actions input[type="email"]:focus {
-  outline: none;
+.offer-card-actions input[type="email"]:focus-visible {
   border-bottom-color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
 .offer-card-actions .button-wrapper {
   margin: 0;
+}
+
+/* Rich body copy — allows nested block elements */
+.offer-card-body {
+  max-width: 40ch;
+}
+
+.offer-card-body p {
+  max-width: 40ch;
+}
+
+/* Stat data points inside a card body (e.g. Institutional Low Rates) */
+.offer-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.offer-stat-label {
+  display: block;
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.offer-stat-value {
+  display: block;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-m);
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+/* Rich background image behind card content */
+.offer-card.offer-card-has-bg {
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.offer-card.offer-card-has-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(10 12 16 / 88%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.offer-card.offer-card-has-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ghost watermark: large faint icon in card background */
+.offer-card[data-icon] {
+  position: relative;
+  overflow: hidden;
+}
+
+.offer-card[data-icon]::after {
+  content: attr(data-icon);
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 220px;
+  line-height: 1;
+  color: currentcolor;
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Violet accent variant (Build a Foundation) */
+.offer-card-violet {
+  background: rgb(223 183 255 / 5%);
+  border-color: rgb(223 183 255 / 22%);
+}
+
+.offer-card-violet .offer-card-eyebrow {
+  color: var(--color-secondary);
+}
+
+.offer-card-violet .offer-card-body a {
+  color: var(--color-secondary);
+}
+
+.offer-card-violet .offer-card-body a:hover {
+  color: var(--color-secondary-container);
+  text-decoration: none;
+}
+
+/* Icon-aside: eyebrow label left, icon badge top-right (APY card) */
+.offer-card-icon-aside .offer-card-eyebrow {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.offer-card-icon-aside .offer-card-eyebrow .material-symbol {
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 219 233 / 8%);
+  border: 1px solid rgb(0 219 233 / 20%);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+/* Center modifier: center-aligns the heading */
+.offer-card-center h3 {
+  text-align: center;
+  max-width: none;
+}
+
+/* Wide card with image visual — switches to row layout on desktop */
+@media (width >= 900px) {
+  .offer-card-wide.offer-card-has-visual {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .offer-card-has-visual .offer-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .offer-card-has-visual .offer-card-visual {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offer-card-has-visual .offer-card-visual img,
+  .offer-card-has-visual .offer-card-visual picture {
+    max-height: 200px;
+    width: auto;
+    max-width: 300px;
+    border-radius: var(--radius-lg);
+  }
 }

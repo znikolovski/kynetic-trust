@@ -117,6 +117,64 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
 
+## Visual Fidelity Gate
+
+This project implements the **Kinetic Trust 2 / Neon Glass** design system. Reference mockups live in `stitch_securbank_bold_reimagined_design/`. The page-to-mockup map:
+
+| Live page | Reference directory |
+|-----------|---------------------|
+| `/` | `securbank_home_consolidated/` |
+| `/accounts-savings` | `securbank_accounts_savings_consolidated/` |
+| `/credit-cards` | `securbank_credit_cards_consolidated/` |
+| `/compare` | `securbank_product_comparison/` |
+| `/insights/quantum-secure-banking` | `securbank_editorial_article_updated/` |
+| Header | `components_navigation_bars/` |
+| Footer | `components_footers/` |
+
+### Required checks before any block or page change is marked done
+
+1. **Capture screenshots** — run `node scripts/capture-previews.mjs` to produce full-page screenshots at 1440×900 in `.fidelity-check/`.
+2. **Written comparison** — open the captured screenshot and the corresponding `screen.png` side by side. For every changed block, write a verdict per row in `.fidelity-check/<page>.md` covering: layout, spacing, type scale, color usage, glass-blur intensity, button treatment. Verdicts must be one of: `match` / `minor deviation` / `major deviation`. A verbal "looks close enough" does not satisfy this check.
+3. **Fix majors first** — all `major deviation` rows must be resolved before the block is shipped. Minor deviations may be deferred only if documented.
+4. **Re-screenshot after each fix block** — do not batch fixes and screenshot once at the end; re-capture and re-compare after each logical group of changes so regressions are caught immediately.
+
+### Proof-of-completion rules (non-negotiable)
+
+These rules exist because agents repeatedly declared DONE based on code inspection rather than visual verification. Do not skip them.
+
+**Screenshot files are the proof, not descriptions.** A task that requires visual verification is not DONE until a screenshot file exists. Before marking any dispatch or task as DONE, run:
+
+```sh
+# Every screenshot path listed in the acceptance criteria must exist
+# AND have a modification time newer than the last code file changed.
+find .fidelity-check/ -newer <last-changed-file> -name "*.png"
+```
+
+If that command returns nothing, the visual acceptance criteria have not been met — do not declare DONE.
+
+**Save screenshots to both locations** (required from Dispatch H onward):
+- `.fidelity-check/<name>-<breakpoint>.png` — for the written verdict file
+- `../stitch_securbank_bold_reimagined_design/<mockup-folder>/live-<breakpoint>.png` — next to the corresponding `screen.png`, so mockup and live render sit side by side for direct comparison without hunting across directories
+
+**Fidelity pass = screenshot comparison, not code reading.** Reading the HTML/CSS and inferring what _should_ render is not a fidelity pass. Open the screenshot image and the `screen.png` image and compare them visually. If you cannot open images, explicitly state that you were unable to do a visual comparison — do not describe a passing verdict you cannot confirm.
+
+**Do not accept subagent visual claims without independent verification.** If you delegated a task to a subagent and it reports that screenshots were taken and compared, verify: (a) the screenshot files exist with the correct timestamps, (b) the written verdict file exists and contains actual row-by-row verdicts (not just "PASS"). A subagent that skips these steps and claims PASS is a false PASS — you are responsible for catching it before propagating it upward.
+
+### Design system tokens (do not deviate without explicit approval)
+
+- Background layers: obsidian `#0a0c10` → surface `#111318` → surface-container-lowest `#0c0e12`
+- Primary accent: `#00dbe9` (cyan); secondary: `#dfb7ff` (violet)
+- Glass: `rgba(255,255,255,0.03)` bg · `blur(12px)` · `rgba(255,255,255,0.1)` border
+- Glass cards MUST be placed on a `surface` (`#111318`) background to be visible — not on obsidian
+- Heading font: Hanken Grotesk 800–900 weight, -0.02em tracking; body: Adobe Clean 18px/1.6
+- Buttons: primary = solid cyan fill; secondary = ghost border; links inside `<em>` = italic accent style
+
+### EDS-specific notes affecting fidelity
+
+- Local `content/` files use raw `<img>` tags; AEM CDN converts these to `<picture>`. All block JS that queries images must fall back: `row.querySelector('picture') ?? row.querySelector('img')`.
+- Section background classes (`surface`, `lowest`) must be explicitly added to content HTML section `<div>`s.
+- Block modifier classes (e.g., `feature-list cards`) are space-separated after the block name and enable variant CSS.
+
 ## Testing & Quality Assurance
 
 ### Performance

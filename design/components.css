@@ -1,0 +1,142 @@
+/*
+ * Kinetic Trust / Neon Glass — Shared Component Styles
+ * DOM contracts and usage: see structure.md
+ * Managed in securbank-design. Do not edit directly in project repos.
+ */
+
+/* ============================================================
+   glass-card
+   Base surface material. Blocks needing the xl card radius
+   (24px) add border-radius: var(--radius-xl) on the element.
+   ============================================================ */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgb(0 219 233 / 35%);
+  box-shadow: var(--cyan-aura);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card { transition: none; }
+}
+
+/* ============================================================
+   eyebrow
+   Category pill: mono, uppercase, primary cyan.
+   Violet variant: add .eyebrow--violet modifier.
+   ============================================================ */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgb(0 219 233 / 25%);
+  background: rgb(0 219 233 / 8%);
+  color: var(--color-primary-fixed);
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow--violet {
+  border-color: rgb(223 183 255 / 25%);
+  background: rgb(223 183 255 / 8%);
+  color: var(--color-secondary);
+}
+
+/* ============================================================
+   material-symbol
+   Material Symbols Outlined icon base setup.
+   ============================================================ */
+.material-symbol {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  font-size: var(--icon-size-default);
+  line-height: 1;
+  user-select: none;
+}
+
+/* ============================================================
+   badge
+   Status / type pill. Use BEM modifier to set the color role.
+   DOM: <span class="badge badge--completed">COMPLETED</span>
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  font-family: var(--mono-font-family);
+  font-size: var(--font-size-badge);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  white-space: nowrap;
+}
+
+.badge--completed {
+  background: rgb(0 255 128 / 12%);
+  color: var(--color-status-completed);
+}
+
+.badge--settled {
+  background: rgb(0 219 233 / 12%);
+  color: var(--color-primary);
+}
+
+.badge--pending {
+  background: rgb(235 255 169 / 12%);
+  color: var(--color-tertiary);
+}
+
+.badge--trade {
+  background: rgb(235 255 169 / 8%);
+  color: var(--color-tertiary);
+}
+
+.badge--transfer {
+  background: rgb(255 255 255 / 6%);
+  color: var(--color-on-surface-variant);
+}
+
+.badge--yield {
+  background: rgb(223 183 255 / 8%);
+  color: var(--color-secondary);
+}
+
+/* ============================================================
+   stat-label / stat-value
+   Metric display pair. Label sits above the value.
+   DOM: <div>
+          <span class="stat-label">Variable APR</span>
+          <span class="stat-value">9.99%</span>
+        </div>
+   ============================================================ */
+.stat-label {
+  display: block;
+  font-family: var(--mono-font-family);
+  font-size: var(--font-size-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-m, 24px);
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1;
+}

@@ -1,0 +1,70 @@
+<!-- DA-authorable content for /register
+     Static fallback = account-type picker cards (step 1 of the registration flow).
+     The nextjs-widget block lazy-loads the full 4-step RegistrationFlow island
+     and replaces the static cards once it fires sb-widget-ready.
+-->
+<body>
+  <header></header>
+  <main>
+    <!-- Static fallback: step-1 account-type picker as plain EDS content -->
+    <div>
+      <div>
+        <h1>Choose your path to <em>financial freedom</em>.</h1>
+        <p>Select the foundation of your future wealth. Every journey begins with a single, secure choice.</p>
+      </div>
+      <div class="offer-grid">
+        <div>
+          <div>small</div>
+          <div>account_balance_wallet</div>
+          <div></div>
+          <div>Personal Account</div>
+          <div>High-yield savings and zero-fee checking with real-time AI insights.</div>
+          <div><a href="/register/personal">Select Account</a></div>
+          <div></div>
+          <div><img src="/media/savings-visualization.jpg" alt=""></div>
+        </div>
+        <div>
+          <div>small</div>
+          <div>credit_card</div>
+          <div></div>
+          <div>Credit Card</div>
+          <div>Premium rewards and industry-leading security for the way you live.</div>
+          <div><a href="/register/credit-card">View Options</a></div>
+          <div></div>
+          <div><img src="/media/offer-luxury.jpg" alt=""></div>
+        </div>
+        <div>
+          <div>small</div>
+          <div>home</div>
+          <div></div>
+          <div>Mortgage App</div>
+          <div>Fast-track your home ownership with competitive rates and instant pre-approval.</div>
+          <div><a href="/register/mortgage">Start Application</a></div>
+          <div></div>
+          <div><img src="/media/mortgage-hero.jpg" alt=""></div>
+        </div>
+      </div>
+      <!-- Widget island — replaces the static cards + h1 above once mounted -->
+      <div class="nextjs-widget">
+        <div><div>registration-flow</div></div>
+        <div><div></div></div>
+        <div><div></div></div>
+      </div>
+    </div>
+
+    <!-- Trust strip -->
+    <div class="divider">
+      <div>
+        <p>FDIC Insured Up to $250,000 · NMLS #123456 · Equal Housing Lender · Licensed in 50 States</p>
+      </div>
+    </div>
+
+    <div class="metadata">
+      <div>
+        <div>Title</div>
+        <div>SecurBank | Join</div>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+</body>

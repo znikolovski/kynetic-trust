@@ -1,0 +1,101 @@
+/*
+ * Kinetic Trust / Neon Glass — Design Tokens
+ * Single source of truth. Managed in securbank-design.
+ * Do not edit directly in project repos — edit in the design repo and pull.
+ */
+
+:root {
+  /* ---- Depth layers ----------------------------------------- */
+  --color-obsidian:                  #0a0c10;
+  --color-surface:                   #111318;
+  --color-surface-container-lowest:  #0c0e12;
+  --color-surface-container-low:     #1a1c20;
+  --color-surface-container:         #1e2024;
+  --color-surface-container-high:    #282a2e;
+  --color-surface-container-highest: #333539;
+
+  /* ---- Text -------------------------------------------------- */
+  --color-on-surface:         #e2e2e8;
+  --color-on-surface-variant: #b9cacb;
+  --color-outline:            #849495;
+  --color-outline-variant:    #3b494b;
+
+  /* ---- Primary (Phosphor Cyan) ------------------------------- */
+  --color-primary:              #00dbe9;
+  --color-primary-container:    #00f0ff;
+  --color-primary-fixed:        #7df4ff;
+  --color-on-primary:           #00363a;
+  --color-on-primary-container: #006970;
+
+  /* ---- Secondary (Sovereign Violet) -------------------------- */
+  --color-secondary:           #dfb7ff;
+  --color-secondary-container: #9d05ff;
+  --color-on-secondary:        #4b007e;
+
+  /* ---- Tertiary (Kinetic Lime) ------------------------------- */
+  --color-tertiary:           #ebffa9;
+  --color-tertiary-container: #beea00;
+  --color-on-tertiary:        #293500;
+
+  /* ---- Error ------------------------------------------------- */
+  --color-error:           #ffb4ab;
+  --color-error-container: #93000a;
+
+  /* ---- Font families — canonical names ----------------------- */
+  --heading-font-family: 'Hanken Grotesk', hanken-grotesk-fallback, 'Helvetica Neue', arial, sans-serif;
+  --body-font-family:    'adobe-clean', adobe-clean-fallback, 'Helvetica Neue', arial, sans-serif;
+  --mono-font-family:    'JetBrains Mono', jetbrains-mono-fallback, ui-monospace, monospace;
+
+  /* ---- Font family aliases — short names used by the dashboard */
+  --font-heading: var(--heading-font-family);
+  --font-body:    var(--body-font-family);
+  --font-mono:    var(--mono-font-family);
+
+  /* ---- Type scale -------------------------------------------- */
+  --body-font-size-m:  18px;
+  --body-font-size-s:  16px;
+  --body-font-size-xs: 14px;
+
+  --heading-font-size-xxl: 48px; /* display — mobile */
+  --heading-font-size-xl:  40px;
+  --heading-font-size-l:   32px;
+  --heading-font-size-m:   24px;
+  --heading-font-size-s:   20px;
+  --heading-font-size-xs:  18px;
+
+  /* ---- Glass system ------------------------------------------ */
+  --glass-bg:        rgb(255 255 255 / 3%);
+  --glass-border:    rgb(255 255 255 / 10%);
+  --glass-blur:      12px;
+  --cyan-aura:       0 0 24px -4px rgb(0 219 233 / 30%);
+  --cyan-aura-hover: 0 0 32px 0   rgb(0 219 233 / 45%);
+  --violet-aura:     0 0 24px 4px rgb(157 5 255 / 15%);
+
+  /* ---- Shape ------------------------------------------------- */
+  --radius-default: 0.25rem;
+  --radius-lg:      0.5rem;
+  --radius-xl:      1.5rem;
+  --radius-full:    9999px;
+
+  /* ---- Micro-scale (UI chrome — below body text ramp) ------- */
+  --font-size-badge:   10px; /* badge and pill labels */
+  --font-size-label:   11px; /* stat-label, table column headers */
+  --icon-size-default: 20px; /* material-symbol base render size */
+  --icon-size-large:   28px; /* material-symbol in circular icon containers */
+
+  /* ---- Status vocabulary (dashboard color vocabulary) ------- */
+  --color-status-completed: #00ff80;
+  --color-status-pending:   var(--color-tertiary);  /* #ebffa9 lime */
+  --color-status-settled:   var(--color-primary);   /* #00dbe9 cyan */
+  --color-status-trade:     var(--color-tertiary);
+  --color-status-yield:     var(--color-secondary); /* #dfb7ff violet */
+
+  /* ---- Spacing ----------------------------------------------- */
+  --gutter: 24px;
+}
+
+@media (width >= 900px) {
+  :root {
+    --heading-font-size-xxl: 72px; /* display — desktop */
+  }
+}

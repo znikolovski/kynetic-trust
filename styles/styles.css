@@ -1,92 +1,24 @@
 /*
  * Kinetic Trust design system — SecurBank EDS site
- * Overrides the default AEM Boilerplate styles.css with the
- * "Kinetic Trust 2 / Neon Glass" tokens (see stitch_securbank_bold_reimagined_design/kinetic_trust_2/DESIGN.md)
  */
+@import url('../design/tokens.css');
+@import url('../design/components.css');
 
+/* EDS boilerplate semantic aliases — maps design tokens to the names EDS boilerplate expects */
 :root {
-  /* ---- Kinetic Trust color tokens ---- */
-  --color-obsidian: #0a0c10;
-  --color-surface: #111318;
-  --color-surface-container-lowest: #0c0e12;
-  --color-surface-container-low: #1a1c20;
-  --color-surface-container: #1e2024;
-  --color-surface-container-high: #282a2e;
-  --color-surface-container-highest: #333539;
-  --color-on-surface: #e2e2e8;
-  --color-on-surface-variant: #b9cacb;
-  --color-outline: #849495;
-  --color-outline-variant: #3b494b;
-  --color-primary: #00dbe9;
-  --color-primary-container: #00f0ff;
-  --color-primary-fixed: #7df4ff;
-  --color-on-primary: #00363a;
-  --color-on-primary-container: #006970;
-  --color-secondary: #dfb7ff;
-  --color-secondary-container: #9d05ff;
-  --color-on-secondary: #4b007e;
-  --color-tertiary: #ebffa9;
-  --color-tertiary-container: #beea00;
-  --color-on-tertiary: #293500;
-  --color-error: #ffb4ab;
-  --color-error-container: #93000a;
+  --background-color:  var(--color-obsidian);
+  --surface-color:     var(--color-surface);
+  --text-color:        var(--color-on-surface);
+  --text-muted-color:  var(--color-on-surface-variant);
+  --link-color:        var(--color-primary);
+  --link-hover-color:  var(--color-primary-fixed);
+  --border-color:      var(--color-outline-variant);
 
-  /* semantic aliases used throughout blocks */
-  --background-color: var(--color-obsidian);
-  --surface-color: var(--color-surface);
-  --text-color: var(--color-on-surface);
-  --text-muted-color: var(--color-on-surface-variant);
-  --link-color: var(--color-primary);
-  --link-hover-color: var(--color-primary-fixed);
-  --border-color: var(--color-outline-variant);
-
-  /* glass + glow effects */
-  --glass-bg: rgb(255 255 255 / 3%);
-  --glass-border: rgb(255 255 255 / 10%);
-  --glass-blur: 12px;
-  --cyan-aura: 0 0 24px -4px rgb(0 219 233 / 30%);
-  --cyan-aura-hover: 0 0 32px 0 rgb(0 219 233 / 45%);
-  --violet-aura: 0 0 24px 4px rgb(157 5 255 / 15%);
-
-  /* fonts */
-  --body-font-family: geist, geist-fallback, 'Helvetica Neue', arial, sans-serif;
-  --heading-font-family: 'Hanken Grotesk', hanken-grotesk-fallback, 'Helvetica Neue', arial, sans-serif;
-  --mono-font-family: 'JetBrains Mono', jetbrains-mono-fallback, ui-monospace, monospace;
-
-  /* body sizes */
-  --body-font-size-m: 18px;
-  --body-font-size-s: 16px;
-  --body-font-size-xs: 14px;
-
-  /* heading sizes (mobile-first, matches Kinetic Trust display/headline scale) */
-  --heading-font-size-xxl: 48px; /* display-lg-mobile */
-  --heading-font-size-xl: 40px; /* headline-xl */
-  --heading-font-size-l: 32px; /* headline-lg */
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
-
-  /* layout */
-  --container-max: 1280px;
-  --gutter: 24px;
-  --margin-mobile: 20px;
+  /* EDS layout tokens — project-specific, not shared with the dashboard */
+  --container-max:  1280px;
+  --margin-mobile:  20px;
   --margin-desktop: 64px;
-  --nav-height: 80px;
-  --radius-default: 0.25rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 1.5rem;
-  --radius-full: 9999px;
-}
-
-@media (width >= 900px) {
-  :root {
-    --heading-font-size-xxl: 72px; /* display-lg */
-    --heading-font-size-xl: 40px;
-    --heading-font-size-l: 32px;
-    --heading-font-size-m: 24px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
-  }
+  --nav-height:     80px;
 }
 
 * {
@@ -208,6 +140,12 @@ a:hover {
   text-decoration: underline;
 }
 
+a:not(.button):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 /* buttons — authored via **bold link** (primary), *italic link* (secondary),
    ***bold+italic link*** (accent). See scripts/scripts.js decorateButtons(). */
 p.button-wrapper {
@@ -227,7 +165,7 @@ button.button {
   max-width: 100%;
   margin: 0;
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-lg);
   padding: 0.85em 1.8em;
   font-family: var(--body-font-family);
   font-weight: 700;
@@ -243,6 +181,18 @@ button.button {
 a.button:active,
 button.button:active {
   transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.button:any-link,
+  button.button {
+    transition: none;
+  }
+
+  a.button:active,
+  button.button:active {
+    transform: none;
+  }
 }
 
 a.button.primary:any-link,
@@ -264,9 +214,14 @@ button.button.secondary {
   color: var(--text-color);
 }
 
-a.button.secondary:hover,
+a.button.secondary:hover {
+  background-color: rgb(255 255 255 / 5%);
+  text-decoration: none;
+}
+
 a.button.secondary:focus-visible {
   background-color: rgb(255 255 255 / 5%);
+  box-shadow: 0 0 0 2px var(--color-primary);
   text-decoration: none;
 }
 
@@ -299,29 +254,7 @@ main img {
   width: 100%;
 }
 
-/* ---- glass utility, shared by many blocks ---- */
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgb(0 219 233 / 25%);
-  background: rgb(0 219 233 / 8%);
-  color: var(--color-primary-fixed);
-  font-family: var(--mono-font-family);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
+/* .glass-card and .eyebrow are now in design/components.css */
 
 /* sections */
 main > .section {
@@ -359,9 +292,43 @@ main .section.divider {
   border-top: 1px solid var(--border-color);
 }
 
+/* "Popular offers" heading cyan underline accent (lower specificity — must come first) */
+.section.offers-intro h2 {
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.section.offers-intro h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 48px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* accent-heading: violet left-bar accent on h2 */
+.section.accent-heading .default-content-wrapper h2 {
+  position: relative;
+  padding-left: 20px;
+}
+
+.section.accent-heading .default-content-wrapper h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 4px;
+  height: 0.85em;
+  background: var(--color-secondary);
+  border-radius: 2px;
+}
+
 /* "Popular offers" section: heading and description side by side at desktop */
 @media (width >= 900px) {
-  .section.offers-intro .default-content-wrapper {
+  .section.offers-intro > div:first-child > div {
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: start;
@@ -369,14 +336,48 @@ main .section.divider {
     margin-bottom: 40px;
   }
 
-  .section.offers-intro .default-content-wrapper h2 {
+  .section.offers-intro > div:first-child > div h2 {
     margin: 0;
   }
 
-  .section.offers-intro .default-content-wrapper p {
+  .section.offers-intro > div:first-child > div p {
     margin: 0;
     font-size: var(--body-font-size-s);
   }
+}
+
+/* Compare page: hero intro heading at display scale */
+@media (width >= 900px) {
+  .section.compare-hero h1 {
+    font-size: clamp(72px, 10vw, 120px);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+}
+
+
+/* ---- Section width modifiers ---- */
+
+/* full-bleed: horizontal constraints removed; background still extends edge-to-edge */
+main > .section.full-bleed > div {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* hero-full: ALL padding removed; the block manages its own spacing */
+main > .section.hero-full {
+  padding: 0;
+}
+
+main > .section.hero-full > div {
+  max-width: none;
+  padding: 0;
+}
+
+/* narrow: reduced content width for editorial / focused sections */
+main > .section.narrow > div {
+  max-width: 720px;
 }
 
 /* "We made it simple" + CTA side by side at desktop */
@@ -386,8 +387,13 @@ main .section.divider {
     grid-template-columns: 1fr 380px;
     align-items: start;
     gap: 40px 64px;
-    padding-left: var(--margin-desktop);
-    padding-right: var(--margin-desktop);
+
+    /* Section stays full-width (background extends edge-to-edge) but content
+       is clamped to --container-max, matching every other section's inner div. */
+    padding-inline: max(
+      var(--margin-desktop),
+      calc((100% - var(--container-max)) / 2 + var(--margin-desktop))
+    );
   }
 
   .section.features-cta > div {
@@ -399,4 +405,22 @@ main .section.divider {
   .section.features-cta > div:first-child {
     grid-column: 1 / -1;
   }
+
+  /* Features stack vertically inside the left column */
+  .section.features-cta .feature-list {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/* text-center: center the intro copy of a section and make the h2/h3 cyan.
+   Placed last so it outranks the general > div rules above without fighting them.
+   Uses modern :not() list notation (Selectors 4). */
+main .section.text-center > div:not(.feature-list-wrapper, .cta-wrapper) {
+  text-align: center;
+}
+
+main .section.text-center > div:not(.feature-list-wrapper, .cta-wrapper) h2,
+main .section.text-center > div:not(.feature-list-wrapper, .cta-wrapper) h3 {
+  color: var(--color-primary);
 }

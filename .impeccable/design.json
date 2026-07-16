@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-16T18:00:00Z",
+  "title": "Design System: Kinetic Trust / Neon Glass",
+  "extensions": {
+    "colorMeta": {
+      "obsidian":           { "role": "neutral",   "displayName": "Obsidian",               "canonical": "oklch(8% 0.006 240)",   "tonalRamp": ["#050608", "#0a0c10", "#111318", "#1a1e26", "#252b35", "#353d4a", "#4d5668", "#6b7688"] },
+      "surface":            { "role": "neutral",   "displayName": "Surface",                "canonical": "oklch(11% 0.008 240)",  "tonalRamp": ["#070810", "#0c0e14", "#111318", "#1a1e26", "#252b35", "#353d4a", "#4d5668", "#6b7688"] },
+      "surface-lowest":     { "role": "neutral",   "displayName": "Surface Lowest",         "canonical": "oklch(9% 0.007 240)",   "tonalRamp": ["#050608", "#0c0e12", "#131619", "#1c2028", "#272d38", "#37404e", "#4f5a6c", "#6d7a8c"] },
+      "primary":            { "role": "primary",   "displayName": "Phosphor Cyan",          "canonical": "oklch(78% 0.14 195)",   "tonalRamp": ["#003740", "#005d6b", "#008a9a", "#00b8cc", "#00dbe9", "#00f0ff", "#7df4ff", "#c5f9ff"] },
+      "primary-container":  { "role": "primary",   "displayName": "Phosphor Cyan Bright",   "canonical": "oklch(82% 0.15 195)",   "tonalRamp": ["#003f48", "#006878", "#009aae", "#00cade", "#00f0ff", "#4df5ff", "#99f8ff", "#ccfbff"] },
+      "secondary":          { "role": "secondary", "displayName": "Sovereign Violet",       "canonical": "oklch(80% 0.12 295)",   "tonalRamp": ["#2d1855", "#4a2a8a", "#6b3fc2", "#9b63ee", "#c08af8", "#dfb7ff", "#ecdeff", "#f5efff"] },
+      "secondary-container":{ "role": "secondary", "displayName": "Violet Mid",             "canonical": "oklch(68% 0.18 295)",   "tonalRamp": ["#1e0a42", "#351868", "#5530a0", "#7852cc", "#9d75ee", "#b97cf4", "#d0aafc", "#ecd4ff"] },
+      "tertiary":           { "role": "tertiary",  "displayName": "Kinetic Lime",           "canonical": "oklch(95% 0.12 115)",   "tonalRamp": ["#2d3a00", "#4a6000", "#6d8c00", "#96b800", "#bde62b", "#d4f564", "#ebffa9", "#f5ffd4"] },
+      "error":              { "role": "error",     "displayName": "Error",                  "canonical": "oklch(80% 0.12 15)",    "tonalRamp": ["#4a1014", "#7a2028", "#a83040", "#d05060", "#ef8088", "#ffb4ab", "#ffcec8", "#ffe5e2"] },
+      "on-surface":         { "role": "neutral",   "displayName": "On-Surface",             "canonical": "oklch(89% 0.007 220)",  "tonalRamp": ["#4a4a52", "#6a6a72", "#8a8a92", "#aaaab2", "#c2c2ca", "#d2d2da", "#e2e2e8", "#f0f0f4"] },
+      "on-surface-variant": { "role": "neutral",   "displayName": "On-Surface Variant",     "canonical": "oklch(77% 0.01 200)",   "tonalRamp": ["#3a4a4b", "#4e6465", "#66807f", "#849495", "#a0b2b1", "#b9cacb", "#d0dede", "#e8f0f0"] },
+      "outline":            { "role": "neutral",   "displayName": "Outline",                "canonical": "oklch(57% 0.01 200)",   "tonalRamp": ["#283030", "#384040", "#4a5556", "#5e6a6b", "#6e8082", "#849495", "#a0b2b1", "#becccc"] },
+      "outline-variant":    { "role": "neutral",   "displayName": "Outline Variant",        "canonical": "oklch(32% 0.018 200)",  "tonalRamp": ["#0e1a1b", "#1a2829", "#253738", "#2d4243", "#35494b", "#3b494b", "#4a6062", "#5e7a7b"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display",  "purpose": "Hero headings only — one per page or campaign hero. Never repeated within a section." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings and primary card titles on large/tall cards. text-wrap: balance required." },
+      "title":    { "displayName": "Title",    "purpose": "Card headings on medium/small cards, modal titles, secondary section headings." },
+      "body":     { "displayName": "Body",     "purpose": "All prose content. Maximum line length 65ch. Adobe Clean exclusively." },
+      "label":    { "displayName": "Label",    "purpose": "Eyebrow labels, stat captions, data annotations, button text. JetBrains Mono only." },
+      "badge":    { "displayName": "Badge",    "purpose": "Status pills and eyebrow badge text. JetBrains Mono 500, 10px, 0.1em letter-spacing, uppercase. Pill shape (border-radius: 9999px) only." },
+      "icon":     { "displayName": "Icon",     "purpose": "Material Symbols Outlined. Variation settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24. Default 20px; 28px in feature-list card variant." }
+    },
+    "shadows": [
+      {
+        "name": "cyan-aura",
+        "value": "0 0 24px -4px rgba(0, 219, 233, 0.3)",
+        "purpose": "Hover state only on interactive glass cards and primary buttons. Communicates that the element is a live control surface. Never applied at rest."
+      }
+    ],
+    "motion": [
+      { "name": "ease-standard",  "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions — border-color, background, box-shadow." },
+      { "name": "duration-short",  "value": "200ms",                        "purpose": "Button fill and color transitions." },
+      { "name": "duration-medium", "value": "300ms",                        "purpose": "Card hover border and glow transitions." }
+    ],
+    "breakpoints": [
+      { "name": "mobile",        "value": "0px" },
+      { "name": "tablet",        "value": "600px" },
+      { "name": "desktop",       "value": "900px" },
+      { "name": "wide",          "value": "1200px" },
+      { "name": "max-container", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary CTA. Phosphor Cyan fill, Obsidian text, 8px radius. The sharpest typographic element in the system.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Apply Now →</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; background: #00dbe9; color: #0a0c10; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s ease, box-shadow 0.3s ease; } .ds-btn-primary:hover { background: #00f0ff; box-shadow: 0 0 24px -4px rgba(0, 219, 233, 0.3); } .ds-btn-primary:focus-visible { outline: 2px solid #00dbe9; outline-offset: 3px; } @media (prefers-reduced-motion: reduce) { .ds-btn-primary { transition: none; } }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary CTA. Transparent background, cyan text and border.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">Explore Perks</a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; background: transparent; color: #00dbe9; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; padding: 10px 24px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: border-color 0.3s ease, color 0.2s ease; } .ds-btn-ghost:hover { border-color: rgba(0,219,233,0.4); color: #00f0ff; } .ds-btn-ghost:focus-visible { outline: 2px solid #00dbe9; outline-offset: 3px; } @media (prefers-reduced-motion: reduce) { .ds-btn-ghost { transition: none; } }"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "glass-card",
+      "description": "Primary layout container. Glassmorphism on Surface (#111318). Never on Obsidian — tonal contrast makes the glass effect register.",
+      "html": "<div class=\"ds-glass-card\"><div class=\"ds-card-eyebrow\"><span class=\"ds-eyebrow-text\">UNLIMITED 5%</span></div><h3 class=\"ds-card-title\">Cash Back</h3><p class=\"ds-card-body\">Every spend is an investment. Get 5% unlimited cash back on all tech and data services.</p></div>",
+      "css": ".ds-glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 32px; transition: border-color 0.3s ease, box-shadow 0.3s ease; } .ds-glass-card:hover { border-color: rgba(0,219,233,0.35); box-shadow: 0 0 24px -4px rgba(0,219,233,0.3); } .ds-card-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; } .ds-eyebrow-text { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #00dbe9; background: rgba(0,219,233,0.08); border: 1px solid rgba(0,219,233,0.15); border-radius: 9999px; padding: 4px 14px; } .ds-card-title { font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; color: #e2e2e8; margin: 0 0 16px; max-width: 26ch; } .ds-card-body { font-family: 'adobe-clean', system-ui, sans-serif; font-size: 1.125rem; line-height: 1.6; color: #b9cacb; max-width: 40ch; margin: 0; } @media (prefers-reduced-motion: reduce) { .ds-glass-card { transition: none; } }"
+    },
+    {
+      "name": "Eyebrow Pill",
+      "kind": "chip",
+      "refersTo": "eyebrow-pill",
+      "description": "Category identifier for cards and sections. JetBrains Mono, uppercase, cyan. Full pill radius. Rendered from authored eyebrow cell text in offer-grid.",
+      "html": "<div class=\"ds-eyebrow\"><span class=\"ds-eyebrow-icon\" aria-hidden=\"true\">payments</span><span class=\"ds-eyebrow-label\">UNLIMITED 5%</span></div>",
+      "css": ".ds-eyebrow { display: inline-flex; align-items: center; gap: 12px; color: #00dbe9; margin-bottom: 16px; } .ds-eyebrow-icon { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 28px; line-height: 1; } .ds-eyebrow-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Stat Data Point",
+      "kind": "custom",
+      "description": "Rate and metric display inside offer cards. Institutional vocabulary: label above value.",
+      "html": "<div class=\"ds-stat\"><span class=\"ds-stat-label\">Variable APR</span><span class=\"ds-stat-value\">9.99%</span></div>",
+      "css": ".ds-stat { display: flex; flex-direction: column; gap: 4px; } .ds-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #b9cacb; } .ds-stat-value { font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 1.75rem; font-weight: 900; line-height: 1; color: #00dbe9; }"
+    },
+    {
+      "name": "CTA Section (Prominent Centered)",
+      "kind": "custom",
+      "description": "Full-width conversion surface. Eyebrow badges precede the heading in authored content for pill rendering. 'centered' modifier auto-widths the button.",
+      "html": "<div class=\"ds-cta-prominent\"><div class=\"ds-cta-badges\"><span class=\"ds-cta-badge\">⊙ INSTANT APPROVAL</span><span class=\"ds-cta-badge\">⊙ SECURE KYC</span><span class=\"ds-cta-badge\">⊙ UK/EU SUPPORT</span></div><h2 class=\"ds-cta-heading\">The best rate<br><em>is waiting</em></h2><p class=\"ds-cta-body\">Join the future of finance. SecurBank institutional-grade cards are tailored for those who demand more from their capital.</p><a class=\"ds-btn-primary\" href=\"#\">Apply Now →</a></div>",
+      "css": ".ds-cta-prominent { text-align: center; padding: 80px 32px; background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border-radius: 24px; } .ds-cta-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; } .ds-cta-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #00dbe9; background: rgba(0,219,233,0.08); border: 1px solid rgba(0,219,233,0.15); border-radius: 9999px; padding: 4px 14px; } .ds-cta-heading { font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1; color: #e2e2e8; margin: 0 0 24px; text-wrap: balance; } .ds-cta-heading em { color: #00dbe9; font-style: normal; } .ds-cta-body { font-family: 'adobe-clean', system-ui, sans-serif; font-size: 1.125rem; line-height: 1.6; color: #b9cacb; max-width: 50ch; margin: 0 auto 32px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Neon Vault",
+    "overview": "The Kinetic Trust design system is a vault — not a bank branch. The obsidian surface is the vault door: absolute, impenetrable, radiating gravity. The primary cyan is the signal that something is alive inside: phosphor light cutting through total darkness, carrying live data and actionable intelligence. Glass panels don't decorate — they reveal depth without breaching the vault's integrity. Every component is a control surface, not a display case.\n\nThis system explicitly rejects the serifed restraint of traditional private banking (Coutts, J.P. Morgan Private Bank), which reads as slow and exclusionary. It rejects the grey-grid density of Bloomberg terminals — functional but not aspirational, institutional without intention. It rejects the candy-bright roundedness of neobank/fintech-lite products (Monzo, Revolut) — too retail, too thin, zero institutional gravity.\n\nThe design is a complete register: the Neon Glass vocabulary must remain coherent from the logged-out marketing site through to the authenticated dashboard. A visitor moving from the credit-cards page to their portfolio view must feel the same vault.",
+    "keyCharacteristics": [
+      "Obsidian depth, never flat: three distinct background layers create visual gravity without pattern or illustration",
+      "One signal, maximum rarity: primary cyan appears on ≤10% of any screen surface",
+      "Glass as structure: glassmorphism is the layout primitive — never decorative",
+      "Hanken Grotesk at 900 weight: display text is the brand's loudest assertion",
+      "JetBrains Mono for all numeric and machine-generated strings: data is institutionally precise"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule",      "body": "Primary cyan (#00dbe9) covers ≤10% of any given screen surface. If more than one in ten visual units is cyan, the signal is diluted. Rarity is the product.", "section": "colors" },
+      { "name": "The Vault First Rule",     "body": "Glass cards must be placed on a Surface (#111318) or Surface Lowest (#0c0e12) background to register visually. A glass card on Obsidian is invisible — this is a rendering requirement.", "section": "colors" },
+      { "name": "The Data Mono Rule",       "body": "JetBrains Mono is reserved for three uses only: numeric values, machine-generated strings, and eyebrow labels. Every other typographic role belongs to Hanken Grotesk or Adobe Clean.", "section": "typography" },
+      { "name": "The Weight Rule",          "body": "h1–h2 in editorial contexts: 900. h2–h3 in card contexts: 800. h3–h4 in list/table contexts: 700. Body always 400. Never use 600 for headings.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "All surfaces are flat and shadow-free at rest. The only elevation signal is the tonal stack. Shadows appear exclusively as hover-state interactivity signals, never as decoration.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do place glass cards on a Surface (#111318) background, never directly on Obsidian (#0a0c10)",
+      "Do use JetBrains Mono exclusively for numeric values, machine-generated strings, and eyebrow labels",
+      "Do use border-radius: 8px on buttons and border-radius: 24px on cards — the system's complete shape vocabulary",
+      "Do apply the Cyan Aura (box-shadow: 0 0 24px -4px rgba(0,219,233,0.3)) only on interactive hover states",
+      "Do use Hanken Grotesk at 900 weight for display headings",
+      "Do include @media (prefers-reduced-motion: reduce) alternatives for all transitions",
+      "Do use the four-col modifier class on offer-grid when rendering exactly 4 small cards in a row",
+      "Do reorder authored content so eyebrow badge paragraphs precede the heading in CTA blocks — the JS gates pill rendering on content order"
+    ],
+    "donts": [
+      "Don't build the traditional private banking aesthetic: no serif display fonts, no dark-wood warmth, no old-money discretion",
+      "Don't use the Bloomberg/Reuters terminal register: no grey-grid density, no monochrome layouts",
+      "Don't build neobank/fintech-lite components: no candy-bright pastels, no rounded-everything cards",
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe on cards",
+      "Don't use gradient text (background-clip: text with a gradient)",
+      "Don't add glassmorphism decoratively — any blur layer that doesn't carry informational weight is noise",
+      "Don't apply eyebrow pills above every section — one named kicker is voice; eyebrows everywhere is AI grammar",
+      "Don't place identical-sized cards in a repeating grid — use the bento system's size variants",
+      "Don't use the hero-metric template (big number, small label, gradient orb)"
+    ]
+  }
+}

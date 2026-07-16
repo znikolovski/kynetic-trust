@@ -97,7 +97,8 @@ export default function decorate(block) {
 
   // the static block this widget should replace once it's live — authored
   // as the immediately preceding block in the same section.
-  const fallback = block.previousElementSibling;
+  // EDS wraps each block in its own div, so walk up to the wrapper first.
+  const fallback = block.parentElement?.previousElementSibling ?? block.previousElementSibling;
 
   block.textContent = '';
   const mount = document.createElement('div');
@@ -108,9 +109,15 @@ export default function decorate(block) {
   const tagName = `sb-widget-${widgetName}`;
 
   const activate = () => {
+    // Priority: authored override → localhost auto-dev → committed prod pin.
+    // On localhost the block always resolves live from the Next.js dev server
+    // so widgets.json only ever needs production values.
+    const isLocalDev = window.location.hostname === 'localhost';
     const resolved = originOverride
       ? resolvePreview(originOverride, widgetName)
-      : resolvePinned(widgetName);
+      : isLocalDev
+        ? resolvePreview('http://localhost:3001', widgetName)
+        : resolvePinned(widgetName);
 
     resolved
       .then(({ appOrigin, scriptUrl }) => loadScript(scriptUrl).then(() => appOrigin))
@@ -127,7 +134,7 @@ export default function decorate(block) {
         el.addEventListener('sb-widget-ready', () => {
           clearTimeout(timeout);
           mount.hidden = false;
-          if (fallback) fallback.setAttribute('hidden', '');
+          fallback?.remove();
         }, { once: true });
 
         mount.append(el);

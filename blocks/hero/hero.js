@@ -16,7 +16,7 @@ export default function decorate(block) {
 
   let sawHeading = false;
   rows.forEach((row) => {
-    const picture = row.querySelector('picture');
+    const picture = row.querySelector('picture') ?? row.querySelector('img');
     if (picture) {
       media.append(picture);
       return;

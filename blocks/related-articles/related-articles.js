@@ -16,7 +16,7 @@ export default function decorate(block) {
 
     const media = document.createElement('div');
     media.className = 'related-article-media';
-    const picture = imageCell?.querySelector('picture');
+    const picture = imageCell?.querySelector('picture') ?? imageCell?.querySelector('img');
     if (picture) media.append(picture);
     card.append(media);
 

@@ -51,10 +51,19 @@
 
 .related-article-card h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   transition: color 0.3s ease;
 }
 
 .related-article-card:hover h3 {
   color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .related-article-media picture,
+  .related-article-media img { transition: none; }
+
+  .related-article-card:hover .related-article-media img { transform: none; }
+
+  .related-article-card h3 { transition: none; }
 }

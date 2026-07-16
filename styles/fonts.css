@@ -1,9 +1,14 @@
 /* stylelint-disable max-line-length */
 
 /*
- * Kinetic Trust type system: Hanken Grotesk (display/headline), Geist (body),
+ * Kinetic Trust type system: Hanken Grotesk (display/headline), Adobe Clean (body),
  * JetBrains Mono (labels/data). Self-host the woff2 files below in /fonts for a
  * guaranteed 100 Lighthouse Performance score (no third-party font requests).
+ *
+ * Adobe Clean: obtain the woff2 from your Adobe Fonts project (Creative Cloud >
+ * Adobe Fonts > Web Projects > Download Package). Font-family name 'adobe-clean'
+ * matches the Typekit CSS name — no changes needed if you later switch to a
+ * Typekit kit embed in head.html.
  *
  * Binaries are NOT included in this scaffold (see ARCHITECTURE.md > Fonts).
  * Until real font files are added, the fallback stacks below render an accurate
@@ -19,11 +24,11 @@
 }
 
 @font-face {
-  font-family: Geist;
+  font-family: 'adobe-clean';
   font-style: normal;
   font-weight: 400 600;
   font-display: swap;
-  src: url('../fonts/geist-regular.woff2') format('woff2');
+  src: url('../fonts/adobe-clean-regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -43,7 +48,7 @@
 }
 
 @font-face {
-  font-family: geist-fallback;
+  font-family: adobe-clean-fallback;
   size-adjust: 100%;
   src: local('Helvetica Neue'), local('Arial');
 }

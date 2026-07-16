@@ -7,7 +7,7 @@
 function renderCellValue(text) {
   const v = text.trim().toLowerCase();
   if (v === 'yes' || v === 'true' || v === 'check' || v === '✓') {
-    return '<span class="comparison-check" aria-label="Included">✓</span>';
+    return '<span class="material-symbol comparison-check" aria-label="Included" role="img">check_circle</span>';
   }
   if (v === 'no' || v === 'false' || v === '—' || v === '-' || v === '') {
     return '<span class="comparison-dash" aria-hidden="true">—</span>';
@@ -19,6 +19,9 @@ export default function decorate(block) {
   const rows = [...block.children];
   const [headerRow, ...bodyRows] = rows;
 
+  // detect which column index (0-based) has a <strong> header — that's the highlight col
+  let highlightCol = -1;
+
   const table = document.createElement('table');
   const thead = document.createElement('thead');
   const headTr = document.createElement('tr');
@@ -27,6 +30,10 @@ export default function decorate(block) {
     th.innerHTML = cell.innerHTML;
     th.scope = 'col';
     if (i === 0) th.className = 'comparison-feature-col';
+    if (cell.querySelector('strong') || cell.querySelector('b')) {
+      th.classList.add('comparison-col-highlight');
+      highlightCol = i;
+    }
     headTr.append(th);
   });
   thead.append(headTr);
@@ -43,6 +50,7 @@ export default function decorate(block) {
       } else {
         const td = document.createElement('td');
         td.innerHTML = renderCellValue(cell.textContent);
+        if (i === highlightCol) td.classList.add('comparison-col-highlight');
         tr.append(td);
       }
     });

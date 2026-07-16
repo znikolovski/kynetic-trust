@@ -1,18 +1,8 @@
-.product-hero {
-  padding: 0 var(--margin-mobile);
-}
-
-@media (width >= 900px) {
-  .product-hero {
-    padding: 0 var(--margin-desktop);
-  }
-}
-
 .product-hero-inner {
   display: grid;
   gap: 48px;
   align-items: center;
-  padding: 32px;
+  padding: 40px 32px;
   border-radius: var(--radius-xl);
 }
 
@@ -20,12 +10,59 @@
   .product-hero-inner {
     grid-template-columns: 7fr 5fr;
     padding: 64px;
+    min-height: 80vh;
   }
 }
 
 .product-hero-copy h1 {
   margin: 16px 0;
 }
+
+/* ── Featured stat chip (left / copy column) ────────────────────────────── */
+
+.product-hero-stat-featured {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+  margin-top: 24px;
+  border-radius: var(--radius-lg);
+  border-color: rgb(0 219 233 / 40%);
+  box-shadow: var(--cyan-aura);
+}
+
+.product-hero-stat-featured .product-hero-stat-label {
+  color: var(--color-primary);
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.product-hero-stat-featured .product-hero-stat-value {
+  margin: 4px 0 0;
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.product-hero-stat-featured .product-hero-stat-sub {
+  margin: 4px 0 0;
+  font-family: var(--mono-font-family);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+/* Inside the dashboard the chip fills the full width and needs no external top margin */
+.product-hero-dashboard .product-hero-stat-featured {
+  display: flex;
+  margin-top: 0;
+}
+
+/* ── Dashboard panel (right / visual column) ─────────────────────────────── */
 
 .product-hero-visual {
   display: flex;
@@ -36,35 +73,157 @@
 .product-hero-visual picture,
 .product-hero-visual img {
   width: 100%;
+  height: auto;
   border-radius: var(--radius-lg);
+  display: block;
 }
 
-.product-hero-stat {
+/* Dashboard widget container */
+.product-hero-dashboard {
   padding: 24px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header row: wallet icon + ACTIVE badge */
+.product-hero-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-hero-dashboard-header .material-symbol {
+  color: var(--color-primary);
+  font-size: 28px;
+}
+
+.product-hero-dashboard-badge {
+  background-color: var(--color-tertiary-container);
+  color: var(--color-on-tertiary);
+  font-family: var(--mono-font-family);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
   border-radius: var(--radius-lg);
 }
 
-.product-hero-stat-label {
-  margin: 0;
-  color: var(--color-primary);
+/* Cyan progress bar */
+.product-hero-dashboard-bar {
+  height: 6px;
+  background: rgb(255 255 255 / 10%);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.product-hero-dashboard-fill {
+  height: 100%;
+  width: 75%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 12px rgb(0 219 233 / 60%);
+}
+
+/* 2-column tile grid */
+.product-hero-dashboard-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.product-hero-stat-tile {
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+}
+
+.product-hero-stat-tile .product-hero-stat-label {
+  margin: 0 0 4px;
   font-family: var(--mono-font-family);
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--color-on-surface-variant);
 }
 
-.product-hero-stat-value {
-  margin: 4px 0 0;
+.product-hero-stat-tile .product-hero-stat-value {
+  margin: 0;
   font-family: var(--heading-font-family);
-  font-size: 40px;
+  font-size: 22px;
   font-weight: 900;
   color: var(--color-primary);
   line-height: 1;
 }
 
-.product-hero-stat-sub {
-  margin: 4px 0 0;
+/* Status row at bottom of dashboard */
+.product-hero-dashboard-status {
+  border-top: 1px solid var(--border-color);
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+.product-hero-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.product-hero-stat-row .product-hero-stat-label {
+  margin: 0;
+  font-family: var(--mono-font-family);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.product-hero-stat-row .product-hero-stat-value {
+  margin: 0;
   font-family: var(--mono-font-family);
   font-size: 12px;
-  color: var(--color-on-surface-variant);
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.06em;
+}
+
+/* Background photo behind dashboard: photo fills the visual column, dashboard floats above */
+.product-hero-visual-bg {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-size: cover;
+  background-position: center;
+  min-height: 340px;
+}
+
+.product-hero-visual-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgb(10 12 16 / 20%), rgb(10 12 16 / 45%));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.product-hero-visual-bg .product-hero-dashboard {
+  position: relative;
+  z-index: 1;
+  margin: 24px;
+}
+
+/* stretch modifier: dashboard fills the full visual column height */
+@media (width >= 900px) {
+  .product-hero.stretch .product-hero-inner {
+    align-items: stretch;
+  }
+
+  .product-hero.stretch .product-hero-dashboard {
+    flex: 1;
+  }
+
+  .product-hero.stretch .product-hero-dashboard > :last-child {
+    margin-top: auto;
+  }
 }
