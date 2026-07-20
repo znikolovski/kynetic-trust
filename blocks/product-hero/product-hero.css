@@ -10,7 +10,6 @@
   .product-hero-inner {
     grid-template-columns: 7fr 5fr;
     padding: 64px;
-    min-height: 80vh;
   }
 }
 

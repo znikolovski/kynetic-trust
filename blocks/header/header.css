@@ -96,9 +96,10 @@ header .nav-tools {
   gap: 12px;
 }
 
-/* EDS wraps plain-text section content in a single default-content-wrapper;
-   make that wrapper flex so "Join Now" + "Sign In" sit side by side */
-header .nav-tools > div {
+/* decorateSections wraps each section child in an extra div; the original
+   inner div needs flex too so "Join Now" + "Sign In" sit side by side */
+header .nav-tools > div,
+header .nav-tools > div > div {
   display: flex;
   align-items: center;
   gap: 12px;

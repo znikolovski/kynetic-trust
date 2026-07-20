@@ -11,8 +11,10 @@
 }
 
 @media (width >= 900px) {
+  /* Center 640px hero content within the left 42% text column on wide screens.
+     21vw = center of the 42vw left column; 320px = half of max-width 640px. */
   .hero {
-    padding: 0 var(--margin-desktop);
+    padding: 0 var(--margin-desktop) 0 max(var(--margin-desktop), calc(21vw - 320px));
   }
 }
 
