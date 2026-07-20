@@ -1,34 +1,34 @@
 {
   "comparison-table": {
-    "appOrigin": "https://app.securbank.com",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/comparison-table-SFFOY3HG.js",
     "version": "b1019b9-1783925425787",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-13T06:50:25.747Z"
   },
   "login-modal": {
-    "appOrigin": "https://app.securbank.com",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/login-modal-YSVCESZT.js",
     "version": "b1019b9-1783925425787",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-13T06:50:25.747Z"
   },
   "registration-flow": {
-    "appOrigin": "https://app.securbank.com",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/registration-flow-AOTISJW3.js",
     "version": "b1019b9-1783995427896",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-14T02:30:27.896Z"
   },
   "mortgage-calculator": {
-    "appOrigin": "https://app.securbank.com",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/mortgage-calculator-T6M4637S.js",
     "version": "b1019b9-1783925425787",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-13T06:50:25.747Z"
   },
   "transaction-summary": {
-    "appOrigin": "https://app.securbank.com",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/transaction-summary-N4TRNAI2.js",
     "version": "b1019b9-1784165557078",
     "sourceCommit": "b1019b9",
