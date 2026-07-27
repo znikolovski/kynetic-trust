@@ -292,6 +292,16 @@ main .section.divider {
   border-top: 1px solid var(--border-color);
 }
 
+/* Metadata block must never render as visible content */
+main > .section.metadata {
+  display: none;
+}
+
+/* Collapse padding on sections whose only visible child is a still-loading widget */
+main > .section:has(> div > .nextjs-widget.block > .nextjs-widget-mount[hidden]:only-child) {
+  padding: 0;
+}
+
 /* "Popular offers" heading cyan underline accent (lower specificity — must come first) */
 .section.offers-intro h2 {
   position: relative;

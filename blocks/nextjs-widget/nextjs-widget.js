@@ -113,11 +113,10 @@ export default function decorate(block) {
     // On localhost the block always resolves live from the Next.js dev server
     // so widgets.json only ever needs production values.
     const isLocalDev = window.location.hostname === 'localhost';
-    const resolved = originOverride
-      ? resolvePreview(originOverride, widgetName)
-      : isLocalDev
-        ? resolvePreview('http://localhost:3001', widgetName)
-        : resolvePinned(widgetName);
+    let resolved;
+    if (originOverride) resolved = resolvePreview(originOverride, widgetName);
+    else if (isLocalDev) resolved = resolvePreview('http://localhost:3001', widgetName);
+    else resolved = resolvePinned(widgetName);
 
     resolved
       .then(({ appOrigin, scriptUrl }) => loadScript(scriptUrl).then(() => appOrigin))

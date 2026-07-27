@@ -17,7 +17,7 @@
 
 .mc-header-label {
   font-family: var(--mono-font-family);
-  font-size: 11px;
+  font-size: var(--font-size-label);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -39,7 +39,7 @@
 
 .mc-field-label {
   font-family: var(--mono-font-family);
-  font-size: 11px;
+  font-size: var(--font-size-label);
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -56,7 +56,6 @@
 
 /* Range slider */
 .mc-slider {
-  -webkit-appearance: none;
   appearance: none;
   display: block;
   width: 100%;
@@ -73,7 +72,7 @@
 }
 
 .mc-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
+  appearance: none;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -125,7 +124,7 @@
 
 .mc-tile-label {
   font-family: var(--mono-font-family);
-  font-size: 10px;
+  font-size: var(--font-size-label);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -134,7 +133,7 @@
 
 .mc-tile-value {
   font-family: var(--heading-font-family);
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   font-weight: 900;
   color: var(--color-on-surface);
   line-height: 1;
@@ -153,7 +152,7 @@
 
 .mc-result-label {
   font-family: var(--mono-font-family);
-  font-size: 11px;
+  font-size: var(--font-size-label);
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -162,7 +161,7 @@
 
 .mc-result-value {
   font-family: var(--heading-font-family);
-  font-size: 56px;
+  font-size: var(--heading-font-size-xxl);
   font-weight: 900;
   color: var(--color-on-surface);
   line-height: 1;

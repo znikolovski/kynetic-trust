@@ -12,7 +12,7 @@ function calcMonthly(principal, annualRate, termYears) {
   const r = annualRate / 100 / 12;
   const n = termYears * 12;
   if (r === 0) return principal / n;
-  return principal * (r * (1 + r) ** n) / ((1 + r) ** n - 1);
+  return (principal * (r * ((1 + r) ** n))) / (((1 + r) ** n) - 1);
 }
 
 function fmtMoney(n) {

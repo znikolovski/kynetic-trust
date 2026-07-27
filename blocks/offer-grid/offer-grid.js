@@ -33,7 +33,7 @@ export default function decorate(block) {
       : null;
 
     const iconName = iconCell?.textContent.trim();
-    // Ghost watermark: large faint icon rendered via CSS data attribute (skip when bg image present)
+    // Ghost watermark: large faint icon via CSS data attribute (skip when bg image present)
     if (iconName && !iconName.includes('-') && !iconName.endsWith('.svg') && !bgSrc) {
       card.dataset.icon = iconName;
     }

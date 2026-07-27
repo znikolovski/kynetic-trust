@@ -10,6 +10,7 @@
   display: inline-block;
   color: inherit;
   user-select: none;
+
   /* ligature lookup is case-sensitive; reset any inherited text-transform */
   text-transform: none;
 }
@@ -139,19 +140,22 @@ main > .section.divider {
   padding: 24px 0;
 }
 
-/* Glass info card — the original authored div inside EDS's wrapper */
+/* Glass info card — the original authored div inside EDS's wrapper.
+   Uses surface color as base so the card is visible on obsidian backgrounds. */
+/* stylelint-disable-next-line no-descending-specificity */
 .section.divider > div > div {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: var(--color-surface);
   backdrop-filter: blur(12px);
 }
 
 /* Default icon — authors override via section class modifier (see below) */
+/* stylelint-disable-next-line no-descending-specificity */
 .section.divider > div > div::before {
   content: 'info';
   font-family: 'Material Symbols Outlined', sans-serif;
@@ -167,7 +171,7 @@ main > .section.divider {
 /* Author-controlled variants: add .warning / .shield / .check to the section */
 .section.divider.warning > div > div::before {
   content: 'warning';
-  color: oklch(0.82 0.15 85);
+  color: oklch(82% 0.15 85deg);
 }
 
 .section.divider.shield > div > div::before {
@@ -176,9 +180,10 @@ main > .section.divider {
 
 .section.divider.check > div > div::before {
   content: 'check_circle';
-  color: oklch(0.80 0.17 155);
+  color: oklch(80% 0.17 155deg);
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .section.divider > div > div p {
   margin: 0;
   font-family: var(--mono-font-family);
