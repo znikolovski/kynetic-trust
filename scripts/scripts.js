@@ -146,6 +146,22 @@ function decorateButtons(main) {
 }
 
 /**
+ * Hides sections that are DA-authored metadata (plain paragraph format).
+ * These sections have no block container classes and start with a "Title" paragraph.
+ * @param {Element} main The main element
+ */
+function hideMetadataSections(main) {
+  main.querySelectorAll(':scope > .section').forEach((section) => {
+    const hasBlock = [...section.classList].some((c) => c !== 'section' && c.endsWith('-container'));
+    if (hasBlock) return;
+    const firstP = section.querySelector('.default-content-wrapper > p:first-child');
+    if (firstP?.textContent.trim() === 'Title') {
+      section.hidden = true;
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -156,6 +172,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  hideMetadataSections(main);
 }
 
 /**

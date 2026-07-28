@@ -11,6 +11,34 @@
  *      - plain text → renders a labelled email input next to the CTA
  *      - contains <img>/<picture> → renders the image to the right of card content (wide cards)
  */
+
+/**
+ * Detects plain-paragraph stats authored as "LabelValue" (e.g. "Variable APR9.99%") and
+ * converts them to the structured offer-card-stats layout. Handles both DA-plain format
+ * and already-structured HTML (the latter passes through untouched).
+ */
+function parseStatParagraphs(body) {
+  if (body.querySelector('.offer-card-stats')) return; // already structured
+  const statParas = [...body.querySelectorAll('p')].filter((p) => {
+    const t = p.textContent.trim();
+    return t.length < 50 && !t.endsWith('.') && /[£€$¥%]|\d/.test(t);
+  });
+  if (!statParas.length) return;
+  const stats = document.createElement('div');
+  stats.className = 'offer-card-stats';
+  statParas.forEach((para) => {
+    const t = para.textContent.trim();
+    const m = t.match(/^(.*?)([£€$¥][\d.,]+|\d[\d.,]*[£€$¥%]+|\d[\d.,]*)$/);
+    if (m?.[1]?.trim() && m?.[2]) {
+      const row = document.createElement('div');
+      row.innerHTML = `<span class="offer-stat-label">${m[1].trim()}</span><span class="offer-stat-value">${m[2]}</span>`;
+      stats.append(row);
+      para.remove();
+    }
+  });
+  if (stats.children.length) body.append(stats);
+}
+
 export default function decorate(block) {
   const rows = [...block.children];
   block.textContent = '';
@@ -63,6 +91,7 @@ export default function decorate(block) {
       const body = document.createElement('div');
       body.className = 'offer-card-body';
       body.innerHTML = bodyCell.innerHTML;
+      parseStatParagraphs(body);
       card.append(body);
     }
 
