@@ -1,6 +1,6 @@
 {
   "comparison-table": {
-    "appOrigin": "https://kynetic-trust-dashboard-ijzq23fx7-znikolovskis-projects.vercel.app",
+    "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
     "file": "/widgets/comparison-table-LUOFYL4Z.js",
     "version": "-1784529669622",
     "sourceCommit": "efe21a7abf60e6ba49a6d31948e4272310b965c1",
@@ -8,14 +8,14 @@
   },
   "login-modal": {
     "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
-    "file": "/widgets/login-modal-YSVCESZT.js",
+    "file": "/widgets/login-modal-5ZV3IE57.js",
     "version": "b1019b9-1783925425787",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-13T06:50:25.747Z"
   },
   "registration-flow": {
     "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
-    "file": "/widgets/registration-flow-AOTISJW3.js",
+    "file": "/widgets/registration-flow-ADOKIERF.js",
     "version": "b1019b9-1783995427896",
     "sourceCommit": "b1019b9",
     "releasedAt": "2026-07-14T02:30:27.896Z"
