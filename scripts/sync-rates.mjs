@@ -1,26 +1,28 @@
 /**
- * Syncs rates from the dashboard API into the DA placeholders document.
+ * Syncs rates from the dashboard API into the DA placeholders sheet.
  *
- * Usage (requires both env vars):
+ * Usage:
  *   RATES_API_KEY=... DA_TOKEN=... node scripts/sync-rates.mjs
  *
- * DA_TOKEN is an Adobe IMS access token for an account with write access
- * to the znikolovski/kynetic-trust DA repository. For CI, use a service
- * account token via Adobe Developer Console (OAuth Server-to-Server).
+ * DA_TOKEN is an Adobe IMS access token. In CI this is generated fresh each
+ * run by the workflow via the OAuth Server-to-Server client credentials grant
+ * (IMS_CLIENT_ID + IMS_CLIENT_SECRET secrets) — tokens are short-lived so
+ * they are never stored as secrets themselves.
  *
- * Run by .github/workflows/sync-rates.yml on a schedule and on
- * repository_dispatch "rates-changed" events from kynetic-trust-dashboard.
+ * The script writes to the DA source as an HTML table (the format DA's sheet
+ * editor understands), then calls the AEM Admin API to preview and publish the
+ * updated document so the change propagates to the CDN immediately.
  */
 
 const RATES_API = 'https://kynetic-trust-dashboard.vercel.app/api/rates';
 
 const DA_ORG = 'znikolovski';
 const DA_REPO = 'kynetic-trust';
-const DA_PATH = 'placeholders.json';
+const DA_PATH = 'placeholders'; // no extension — DA serves this at /placeholders.json
 
 const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
-const DA_PREVIEW = `https://admin.da.live/preview/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
-const DA_LIVE = `https://admin.da.live/live/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
+const AEM_PREVIEW = `https://admin.hlx.page/preview/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
+const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
 
 async function main() {
   const apiKey = process.env.RATES_API_KEY;
@@ -29,44 +31,57 @@ async function main() {
   if (!apiKey) throw new Error('RATES_API_KEY env var is required');
   if (!daToken) throw new Error('DA_TOKEN env var is required');
 
-  // Fetch rates from the protected dashboard API
+  // 1. Fetch rates from the protected dashboard API
   const ratesRes = await fetch(RATES_API, {
     headers: { Authorization: `Bearer ${apiKey}` },
   });
-  if (!ratesRes.ok) throw new Error(`Dashboard API returned ${ratesRes.status}: ${await ratesRes.text()}`);
-
+  if (!ratesRes.ok) {
+    throw new Error(`Dashboard API returned ${ratesRes.status}: ${await ratesRes.text()}`);
+  }
   const { rates } = await ratesRes.json();
-  const data = rates.map(({ key, display }) => ({ Key: key, Text: display }));
-  const body = JSON.stringify({
-    total: data.length, offset: 0, limit: 256, data,
-  }, null, 2);
 
-  // Write to DA
+  // 2. Build HTML table — the format DA's sheet editor stores and EDS CDN
+  //    converts to { data: [{ Key, Text }] } when serving /placeholders.json
+  const rows = rates
+    .map(({ key, display }) => `    <tr><td>${key}</td><td>${display}</td></tr>`)
+    .join('\n');
+  const html = [
+    '<table>',
+    '  <thead><tr><th>Key</th><th>Text</th></tr></thead>',
+    '  <tbody>',
+    rows,
+    '  </tbody>',
+    '</table>',
+  ].join('\n');
+
+  // 3. Write to DA source
   const putRes = await fetch(DA_SOURCE, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${daToken}`,
-      'Content-Type': 'application/json',
+      'Content-Type': 'text/html',
     },
-    body,
+    body: html,
   });
-  if (!putRes.ok) throw new Error(`DA source PUT returned ${putRes.status}: ${await putRes.text()}`);
+  if (!putRes.ok) {
+    throw new Error(`DA source PUT returned ${putRes.status}: ${await putRes.text()}`);
+  }
 
-  // Preview → then publish to live
-  const previewRes = await fetch(DA_PREVIEW, {
+  // 4. Preview then publish so the CDN picks up the change immediately
+  const previewRes = await fetch(AEM_PREVIEW, {
     method: 'POST',
     headers: { Authorization: `Bearer ${daToken}` },
   });
-  if (!previewRes.ok) process.stderr.write(`DA preview returned ${previewRes.status}\n`);
+  if (!previewRes.ok) process.stderr.write(`AEM preview returned ${previewRes.status}\n`);
 
-  const liveRes = await fetch(DA_LIVE, {
+  const liveRes = await fetch(AEM_LIVE, {
     method: 'POST',
     headers: { Authorization: `Bearer ${daToken}` },
   });
-  if (!liveRes.ok) process.stderr.write(`DA live returned ${liveRes.status}\n`);
+  if (!liveRes.ok) process.stderr.write(`AEM live returned ${liveRes.status}\n`);
 
-  process.stdout.write(`synced ${data.length} rates to DA ${DA_PATH}\n`);
-  data.forEach(({ Key, Text }) => process.stdout.write(`  ${Key}: ${Text}\n`));
+  process.stdout.write(`synced ${rates.length} rates to DA ${DA_PATH}\n`);
+  rates.forEach(({ key, display }) => process.stdout.write(`  ${key}: ${display}\n`));
 }
 
 main().catch((err) => {
