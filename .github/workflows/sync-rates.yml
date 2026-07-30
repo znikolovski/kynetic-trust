@@ -6,9 +6,11 @@ name: Sync rates into DA placeholders
 # deploy that includes a rate change.
 #
 # Required GitHub secrets:
-#   RATES_API_KEY      — Bearer token matching RATES_API_KEY on the dashboard
-#   IMS_CLIENT_ID      — Adobe Developer Console OAuth Server-to-Server client ID
-#   IMS_CLIENT_SECRET  — Adobe Developer Console OAuth Server-to-Server client secret
+#   RATES_API_KEY  — Bearer token matching RATES_API_KEY on the dashboard
+#   DA_TOKEN       — IMS access token for a DA user with write access to the repo.
+#                    Extract from a da.live browser session (DevTools → Network →
+#                    any admin.da.live request → Authorization header).
+#                    Valid for ~24 h; refresh when the workflow starts failing with 401.
 
 on:
   schedule:
@@ -27,23 +29,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate IMS access token
-        id: ims
-        env:
-          IMS_CLIENT_ID: ${{ secrets.IMS_CLIENT_ID }}
-          IMS_CLIENT_SECRET: ${{ secrets.IMS_CLIENT_SECRET }}
-        run: |
-          token=$(curl -sf -X POST https://ims-na1.adobelogin.com/ims/token/v3 \
-            -d "grant_type=client_credentials" \
-            -d "client_id=$IMS_CLIENT_ID" \
-            -d "client_secret=$IMS_CLIENT_SECRET" \
-            -d "scope=openid,AdobeID,additional_info.roles,additional_info.projectedProductContext,read_organizations" \
-            | jq -r .access_token)
-          echo "::add-mask::$token"
-          echo "da_token=$token" >> "$GITHUB_OUTPUT"
-
       - name: Sync rates to DA placeholders
         env:
           RATES_API_KEY: ${{ secrets.RATES_API_KEY }}
-          DA_TOKEN: ${{ steps.ims.outputs.da_token }}
+          DA_TOKEN: ${{ secrets.DA_TOKEN }}
         run: node scripts/sync-rates.mjs
