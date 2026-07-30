@@ -1,0 +1,47 @@
+name: Sync rates into placeholders
+
+# Keeps placeholders.json in sync with the live rates served by the dashboard
+# API. Runs on a schedule so changes to lib/rates.ts in kynetic-trust-dashboard
+# propagate here without manual intervention, and also on repository_dispatch
+# so the dashboard's own deploy workflow can trigger an immediate sync after
+# a deploy that includes a rate change.
+
+on:
+  schedule:
+    # Every hour, on the hour
+    - cron: '0 * * * *'
+  repository_dispatch:
+    types: [rates-changed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch rates and update placeholders.json
+        env:
+          RATES_API_KEY: ${{ secrets.RATES_API_KEY }}
+        run: node scripts/sync-rates.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "rates-sync[bot]"
+          git config user.email "rates-sync@users.noreply.github.com"
+          git add placeholders.json
+          if git diff --staged --quiet; then
+            echo "No change in placeholders.json — nothing to commit."
+          else
+            git commit -m "chore: sync rates from dashboard API"
+            git push
+          fi

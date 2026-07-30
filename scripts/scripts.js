@@ -10,6 +10,7 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  toClassName,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -162,6 +163,40 @@ function hideMetadataSections(main) {
 }
 
 /**
+ * Client-side fallback for {{key}} placeholder replacement.
+ * In production the Edge Function (functions/rates.js) has already replaced
+ * all tokens server-side, so this is a no-op. On local dev and preview
+ * branches without an active Edge Function it ensures tokens are still
+ * replaced after /placeholders.json loads.
+ * @param {Element} main The main element
+ */
+async function decoratePlaceholders(main) {
+  let map;
+  try {
+    const res = await fetch('/placeholders.json');
+    if (!res.ok) return;
+    const { data } = await res.json();
+    map = Object.fromEntries(
+      data.filter((row) => row.Key).map((row) => [toClassName(row.Key), row.Text]),
+    );
+  } catch {
+    return;
+  }
+  const walk = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const next = node.textContent.replace(
+        /\{\{([\w-]+)\}\}/g,
+        (m, key) => map[key] ?? m,
+      );
+      if (next !== node.textContent) node.textContent = next;
+    } else {
+      node.childNodes.forEach(walk);
+    }
+  };
+  walk(main);
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -208,6 +243,8 @@ async function loadLazy(doc) {
 
   const main = doc.querySelector('main');
   await loadSections(main);
+
+  decoratePlaceholders(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
