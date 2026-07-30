@@ -3,14 +3,41 @@
   "offset": 0,
   "limit": 256,
   "data": [
-    { "Key": "standard-apy",              "Text": "2.45%" },
-    { "Key": "high-yield-apy",            "Text": "5.15%" },
-    { "Key": "institutional-apy",         "Text": "6.40%" },
-    { "Key": "premium-monthly-fee",       "Text": "$49" },
-    { "Key": "institutional-monthly-fee", "Text": "$499" },
-    { "Key": "cashback-standard",         "Text": "1.0%" },
-    { "Key": "cashback-premium",          "Text": "Up to 4.5%" },
-    { "Key": "mortgage-rate-30yr",        "Text": "6.85%" },
-    { "Key": "mortgage-rate-15yr",        "Text": "6.25%" }
+    {
+      "Key": "standard-apy",
+      "Text": "2.45%"
+    },
+    {
+      "Key": "high-yield-apy",
+      "Text": "5.15%"
+    },
+    {
+      "Key": "institutional-apy",
+      "Text": "6.40%"
+    },
+    {
+      "Key": "premium-monthly-fee",
+      "Text": "$49"
+    },
+    {
+      "Key": "institutional-monthly-fee",
+      "Text": "$499"
+    },
+    {
+      "Key": "cashback-standard",
+      "Text": "1.0%"
+    },
+    {
+      "Key": "cashback-premium",
+      "Text": "Up to 4.5%"
+    },
+    {
+      "Key": "mortgage-rate-30yr",
+      "Text": "6.85%"
+    },
+    {
+      "Key": "mortgage-rate-15yr",
+      "Text": "6.25%"
+    }
   ]
 }
