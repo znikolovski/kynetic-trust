@@ -1,51 +1,71 @@
 /**
- * Syncs rates from the dashboard API into placeholders.json.
+ * Syncs rates from the dashboard API into the DA placeholders document.
  *
- * Usage (requires RATES_API_KEY env var):
- *   node scripts/sync-rates.mjs
+ * Usage (requires both env vars):
+ *   RATES_API_KEY=... DA_TOKEN=... node scripts/sync-rates.mjs
+ *
+ * DA_TOKEN is an Adobe IMS access token for an account with write access
+ * to the znikolovski/kynetic-trust DA repository. For CI, use a service
+ * account token via Adobe Developer Console (OAuth Server-to-Server).
  *
  * Run by .github/workflows/sync-rates.yml on a schedule and on
- * repository_dispatch events from kynetic-trust-dashboard.
+ * repository_dispatch "rates-changed" events from kynetic-trust-dashboard.
  */
 
-import { writeFileSync, readFileSync } from 'node:fs';
-
 const RATES_API = 'https://kynetic-trust-dashboard.vercel.app/api/rates';
-const OUTPUT = 'placeholders.json';
+
+const DA_ORG = 'znikolovski';
+const DA_REPO = 'kynetic-trust';
+const DA_PATH = 'placeholders.json';
+
+const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
+const DA_PREVIEW = `https://admin.da.live/preview/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
+const DA_LIVE = `https://admin.da.live/live/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
 
 async function main() {
   const apiKey = process.env.RATES_API_KEY;
-  if (!apiKey) throw new Error('RATES_API_KEY env var is required');
+  const daToken = process.env.DA_TOKEN;
 
-  const res = await fetch(RATES_API, {
+  if (!apiKey) throw new Error('RATES_API_KEY env var is required');
+  if (!daToken) throw new Error('DA_TOKEN env var is required');
+
+  // Fetch rates from the protected dashboard API
+  const ratesRes = await fetch(RATES_API, {
     headers: { Authorization: `Bearer ${apiKey}` },
   });
-  if (!res.ok) {
-    throw new Error(`Dashboard API returned ${res.status}: ${await res.text()}`);
-  }
+  if (!ratesRes.ok) throw new Error(`Dashboard API returned ${ratesRes.status}: ${await ratesRes.text()}`);
 
-  const { rates } = await res.json();
-
+  const { rates } = await ratesRes.json();
   const data = rates.map(({ key, display }) => ({ Key: key, Text: display }));
-  const placeholders = {
-    total: data.length,
-    offset: 0,
-    limit: 256,
-    data,
-  };
+  const body = JSON.stringify({
+    total: data.length, offset: 0, limit: 256, data,
+  }, null, 2);
 
-  const next = `${JSON.stringify(placeholders, null, 2)}\n`;
+  // Write to DA
+  const putRes = await fetch(DA_SOURCE, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${daToken}`,
+      'Content-Type': 'application/json',
+    },
+    body,
+  });
+  if (!putRes.ok) throw new Error(`DA source PUT returned ${putRes.status}: ${await putRes.text()}`);
 
-  let current = '';
-  try { current = readFileSync(OUTPUT, 'utf8'); } catch { /* first run */ }
+  // Preview → then publish to live
+  const previewRes = await fetch(DA_PREVIEW, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${daToken}` },
+  });
+  if (!previewRes.ok) process.stderr.write(`DA preview returned ${previewRes.status}\n`);
 
-  if (current === next) {
-    process.stdout.write('placeholders.json is already up to date\n');
-    return;
-  }
+  const liveRes = await fetch(DA_LIVE, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${daToken}` },
+  });
+  if (!liveRes.ok) process.stderr.write(`DA live returned ${liveRes.status}\n`);
 
-  writeFileSync(OUTPUT, next);
-  process.stdout.write(`wrote ${data.length} rates to ${OUTPUT}\n`);
+  process.stdout.write(`synced ${data.length} rates to DA ${DA_PATH}\n`);
   data.forEach(({ Key, Text }) => process.stdout.write(`  ${Key}: ${Text}\n`));
 }
 
