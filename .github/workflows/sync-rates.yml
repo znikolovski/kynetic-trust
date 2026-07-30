@@ -37,7 +37,7 @@ jobs:
             -d "grant_type=client_credentials" \
             -d "client_id=$IMS_CLIENT_ID" \
             -d "client_secret=$IMS_CLIENT_SECRET" \
-            -d "scope=openid,AdobeID,additional_info.roles,additional_info.projectedProductContext,read_organizations" \
+            -d "scope=AdobeID,openid,read_organizations,additional_info.projectedProductContext,additional_info.roles,adobeio_api,read_client_secret,manage_client_secrets,read_pc.dma_aem_ams,target_sdk,aem.folders,aem.assets.author,aem.cdn,aem.frontend.all,session,profile" \
             | jq -r .access_token)
           echo "::add-mask::$token"
           echo "da_token=$token" >> "$GITHUB_OUTPUT"
