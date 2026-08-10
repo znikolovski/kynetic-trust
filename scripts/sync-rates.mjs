@@ -40,19 +40,14 @@ async function main() {
   }
   const { rates } = await ratesRes.json();
 
-  // 2. Build HTML table — the format DA's sheet editor stores and EDS CDN
-  //    converts to { data: [{ Key, Text }] } when serving /placeholders.json
+  // 2. Build the HTML document DA expects for a sheet.
+  //    DA stores sheets as a flat <table> (no thead/tbody) inside a full HTML
+  //    document. EDS reads the first <tr> as column headers and subsequent
+  //    rows as data, producing { data: [{ Key, Text }] } at /placeholders.json.
   const rows = rates
-    .map(({ key, display }) => `    <tr><td>${key}</td><td>${display}</td></tr>`)
+    .map(({ key, display }) => `<tr><td>${key}</td><td>${display}</td></tr>`)
     .join('\n');
-  const html = [
-    '<table>',
-    '  <thead><tr><th>Key</th><th>Text</th></tr></thead>',
-    '  <tbody>',
-    rows,
-    '  </tbody>',
-    '</table>',
-  ].join('\n');
+  const html = `<html><body><table>\n<tr><th>Key</th><th>Text</th></tr>\n${rows}\n</table></body></html>`;
 
   // 3. Write to DA source
   const putRes = await fetch(DA_SOURCE, {
