@@ -171,9 +171,9 @@ function hideMetadataSections(main) {
  * @param {Element} main The main element
  */
 async function decoratePlaceholders(main) {
-  // Skip in DA Experience Workspace — the page loads inside a da.live iframe,
-  // so document.referrer is da.live. Preserve {{key}} tokens for authoring.
-  if (document.referrer.includes('da.live')) return;
+  // Skip only when inside a da.live iframe (EW canvas) — not when previewing
+  // in a regular tab opened from DA.
+  if (window !== window.top && document.referrer.includes('da.live')) return;
   let map;
   try {
     const res = await fetch('/placeholders.json');
