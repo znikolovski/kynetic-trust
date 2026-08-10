@@ -1,0 +1,134 @@
+{
+  "total": 21,
+  "offset": 0,
+  "limit": 21,
+  ":type": "sheet",
+  "data": [
+    {
+      "name": "Hero",
+      "path": "/tools/sidekick/blocks/hero",
+      "tags": "layout",
+      "description": "Full-bleed hero with background image, eyebrow, heading, body copy, and CTA buttons"
+    },
+    {
+      "name": "Product Hero",
+      "path": "/tools/sidekick/blocks/product-hero",
+      "tags": "layout",
+      "description": "Product page hero with heading, body, CTA, visual, and live stat rows below"
+    },
+    {
+      "name": "Feature List",
+      "path": "/tools/sidekick/blocks/feature-list",
+      "tags": "content",
+      "description": "Icon + heading + copy cards; supports 'cards', 'center', 'featured' modifiers"
+    },
+    {
+      "name": "Offer Grid",
+      "path": "/tools/sidekick/blocks/offer-grid",
+      "tags": "content",
+      "description": "Bento-style product offer cards; card sizes: large, tall, small, wide; variants: violet, icon-aside"
+    },
+    {
+      "name": "Pricing Tiers",
+      "path": "/tools/sidekick/blocks/pricing-tiers",
+      "tags": "content",
+      "description": "Side-by-side plan cards with name, price, cadence, features, and CTA; add 'featured' row to highlight a tier"
+    },
+    {
+      "name": "CTA",
+      "path": "/tools/sidekick/blocks/cta",
+      "tags": "layout",
+      "description": "Full-width call-to-action strip with heading, sub-copy, and primary/secondary buttons"
+    },
+    {
+      "name": "Cards",
+      "path": "/tools/sidekick/blocks/cards",
+      "tags": "content",
+      "description": "Generic image + text cards in a responsive grid"
+    },
+    {
+      "name": "Columns",
+      "path": "/tools/sidekick/blocks/columns",
+      "tags": "layout",
+      "description": "Two-column layout; each column takes arbitrary content"
+    },
+    {
+      "name": "Stat Panel",
+      "path": "/tools/sidekick/blocks/stat-panel",
+      "tags": "content",
+      "description": "Key metric panels; each row: label, value, sub-label"
+    },
+    {
+      "name": "Pull Quote",
+      "path": "/tools/sidekick/blocks/pull-quote",
+      "tags": "content",
+      "description": "Editorial blockquote with quote text and attribution"
+    },
+    {
+      "name": "Comparison Table",
+      "path": "/tools/sidekick/blocks/comparison-table",
+      "tags": "content",
+      "description": "Static feature comparison table; first row is the header, subsequent rows are features"
+    },
+    {
+      "name": "Article Header",
+      "path": "/tools/sidekick/blocks/article-header",
+      "tags": "editorial",
+      "description": "Editorial article header with category, headline, deck, author/date byline, and hero image"
+    },
+    {
+      "name": "Tags",
+      "path": "/tools/sidekick/blocks/tags",
+      "tags": "editorial",
+      "description": "Tag/category pill labels; one tag per row"
+    },
+    {
+      "name": "Related Articles",
+      "path": "/tools/sidekick/blocks/related-articles",
+      "tags": "editorial",
+      "description": "List of links to related content; one link per row"
+    },
+    {
+      "name": "Mortgage Calculator",
+      "path": "/tools/sidekick/blocks/mortgage-calculator",
+      "tags": "interactive",
+      "description": "Static EDS mortgage calculator block; optional first row sets the default interest rate"
+    },
+    {
+      "name": "Fragment",
+      "path": "/tools/sidekick/blocks/fragment",
+      "tags": "layout",
+      "description": "Embeds another DA page inline; row contains the full URL of the fragment page"
+    },
+    {
+      "name": "Widget: Comparison Table",
+      "path": "/tools/sidekick/blocks/nextjs-widget-comparison-table",
+      "tags": "nextjs-widget",
+      "description": "Live rate comparison table loaded from the NextJS dashboard (comparison-table widget)"
+    },
+    {
+      "name": "Widget: Transaction Summary",
+      "path": "/tools/sidekick/blocks/nextjs-widget-transaction-summary",
+      "tags": "nextjs-widget",
+      "description": "Personalised account transaction feed loaded from the NextJS dashboard (transaction-summary widget)"
+    },
+    {
+      "name": "Widget: Mortgage Calculator",
+      "path": "/tools/sidekick/blocks/nextjs-widget-mortgage-calculator",
+      "tags": "nextjs-widget",
+      "description": "Interactive mortgage calculator with live rates loaded from the NextJS dashboard (mortgage-calculator widget)"
+    },
+    {
+      "name": "Widget: Login Modal",
+      "path": "/tools/sidekick/blocks/nextjs-widget-login-modal",
+      "tags": "nextjs-widget",
+      "description": "Authentication modal trigger loaded from the NextJS dashboard (login-modal widget)"
+    },
+    {
+      "name": "Widget: Registration Flow",
+      "path": "/tools/sidekick/blocks/nextjs-widget-registration-flow",
+      "tags": "nextjs-widget",
+      "description": "Multi-step account registration flow loaded from the NextJS dashboard (registration-flow widget)"
+    }
+  ]
+}
