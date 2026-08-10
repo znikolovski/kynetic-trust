@@ -171,6 +171,9 @@ function hideMetadataSections(main) {
  * @param {Element} main The main element
  */
 async function decoratePlaceholders(main) {
+  // Skip in DA authoring / Experience Workspace — preserve {{key}} tokens so
+  // authors see placeholders rather than resolved values.
+  if (new URLSearchParams(window.location.search).has('dapreview')) return;
   let map;
   try {
     const res = await fetch('/placeholders.json');
