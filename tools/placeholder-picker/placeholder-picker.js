@@ -33,11 +33,11 @@ function getBootstrap() {
   }
 }
 
-function getLiveOrigin(context) {
+function getPageOrigin(context) {
   const branch = context?.ref || context?.branch || 'main';
   const org = context?.org || DEFAULT_ORG;
   const site = context?.repo || context?.site || DEFAULT_SITE;
-  return `https://${branch}--${site}--${org}.aem.live`;
+  return `https://${branch}--${site}--${org}.aem.page`;
 }
 
 function setStatus(message, isError = false) {
@@ -114,7 +114,7 @@ function renderList(tokens, actions) {
   try {
     const { context, actions } = await DA_SDK;
     const bootstrap = getBootstrap();
-    const origin = bootstrap.codeOrigin || getLiveOrigin(context);
+    const origin = bootstrap.codeOrigin || getPageOrigin(context);
     const tokens = await loadTokens(origin);
     setStatus(tokens.length ? `${tokens.length} token${tokens.length === 1 ? '' : 's'} available.` : '');
     renderList(tokens, actions);
