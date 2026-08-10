@@ -171,9 +171,9 @@ function hideMetadataSections(main) {
  * @param {Element} main The main element
  */
 async function decoratePlaceholders(main) {
-  // Skip in DA authoring / Experience Workspace — preserve {{key}} tokens so
-  // authors see placeholders rather than resolved values.
-  if (new URLSearchParams(window.location.search).has('dapreview')) return;
+  // Skip in DA Experience Workspace — the page loads inside a da.live iframe,
+  // so document.referrer is da.live. Preserve {{key}} tokens for authoring.
+  if (document.referrer.includes('da.live')) return;
   let map;
   try {
     const res = await fetch('/placeholders.json');
