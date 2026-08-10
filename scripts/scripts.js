@@ -177,7 +177,7 @@ async function decoratePlaceholders(main) {
     if (!res.ok) return;
     const { data } = await res.json();
     map = Object.fromEntries(
-      data.filter((row) => row.Key).map((row) => [toClassName(row.Key), row.Text]),
+      data.filter((row) => row.Key).map((row) => [toClassName(row.Key), row.Value]),
     );
   } catch {
     return;
