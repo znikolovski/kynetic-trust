@@ -3,7 +3,9 @@
     "ignoreRules": [],
     "ignoreFiles": [
       "styles/fonts.css",
-      "tools/placeholder-picker/index.html"
+      "tools/placeholder-picker/index.html",
+      "tools/placeholder-picker/placeholder-picker.css",
+      "tools/placeholder-picker/placeholder-picker.js"
     ],
     "ignoreValues": []
   }

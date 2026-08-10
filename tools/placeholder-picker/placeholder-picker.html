@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="da-org" content="znikolovski" />
+    <meta name="da-site" content="kynetic-trust" />
+    <title>Placeholder Picker</title>
+    <link rel="stylesheet" href="./placeholder-picker.css" />
+  </head>
+  <body>
+    <script type="application/json" id="pp-bootstrap">
+      {"codeOrigin":"https://main--kynetic-trust--znikolovski.aem.live"}
+    </script>
+    <header class="pp-header">
+      <h1>Placeholder Tokens</h1>
+      <p class="pp-lead">Click a token to insert it at the cursor.</p>
+      <label class="pp-search-label">
+        <span class="pp-sr-only">Search tokens</span>
+        <input type="search" id="pp-search" placeholder="Search tokens or values…" autocomplete="off" spellcheck="false" />
+      </label>
+    </header>
+    <p class="pp-status" id="pp-status" hidden></p>
+    <ul class="pp-list" id="pp-list" aria-label="Placeholder tokens"></ul>
+    <script type="module" src="./placeholder-picker.js"></script>
+  </body>
+</html>
