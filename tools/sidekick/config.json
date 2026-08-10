@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    {
+      "id": "library",
+      "title": "Block Library",
+      "environments": ["edit"],
+      "url": "https://www.aem.live/tools/sidekick/library/index.html",
+      "passConfig": true,
+      "passReferrer": true
+    }
+  ],
+  "library": {
+    "base": "/tools/sidekick/library.json"
+  }
+}
