@@ -42,25 +42,20 @@ async function main() {
   }
   const { rates } = await ratesRes.json();
 
-  // 2. Build the DA sheet JSON payload (matching the format DA's editor POSTs).
-  //    Column headers Key/Value become the field names in /placeholders.json.
+  // 2. Build the DA sheet JSON payload per the DA Admin API docs.
+  //    Field names in data[] become the column names served by /placeholders.json.
   const sheetData = {
     total: rates.length,
-    limit: rates.length,
     offset: 0,
+    limit: rates.length,
     data: rates.map(({ key, display }) => ({ Key: key, Value: display })),
-    ':colWidths': [100, 100],
-    ':sheetname': 'data',
     ':type': 'sheet',
   };
 
-  // 3. POST to DA as multipart/form-data — the same format the DA editor uses.
+  // 3. POST to DA as multipart/form-data per the DA Admin API docs:
+  //    --form 'data=@/path/to/data.json'
   const form = new FormData();
-  form.append(
-    'data',
-    new Blob([JSON.stringify(sheetData)], { type: 'application/json' }),
-    'blob',
-  );
+  form.append('data', new Blob([JSON.stringify(sheetData)], { type: 'application/json' }));
 
   const postRes = await fetch(DA_SOURCE, {
     method: 'POST',
@@ -70,6 +65,11 @@ async function main() {
   if (!postRes.ok) {
     throw new Error(`DA source POST returned ${postRes.status}: ${await postRes.text()}`);
   }
+
+  // Verify DA stored the data correctly
+  const verifyRes = await fetch(DA_SOURCE, { headers: { Authorization: `Bearer ${daToken}` } });
+  const stored = await verifyRes.json();
+  process.stdout.write(`DA verification: ${stored.total ?? '?'} rows stored\n`);
 
   // 4. Trigger EDS preview/live so the CDN picks up the change immediately
   const previewRes = await fetch(AEM_PREVIEW, {
