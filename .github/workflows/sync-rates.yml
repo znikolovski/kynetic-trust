@@ -9,6 +9,7 @@ name: Sync rates into DA placeholders
 #   RATES_API_KEY      — Bearer token matching RATES_API_KEY on the dashboard
 #   IMS_CLIENT_ID      — Adobe Developer Console OAuth Server-to-Server client ID
 #   IMS_CLIENT_SECRET  — Adobe Developer Console OAuth Server-to-Server client secret
+#   HLX_TOKEN          — GitHub PAT (repo scope) for admin.hlx.page preview/live calls
 
 on:
   schedule:
@@ -46,4 +47,5 @@ jobs:
         env:
           RATES_API_KEY: ${{ secrets.RATES_API_KEY }}
           DA_TOKEN: ${{ steps.ims.outputs.da_token }}
+          HLX_TOKEN: ${{ secrets.HLX_TOKEN }}
         run: node scripts/sync-rates.mjs

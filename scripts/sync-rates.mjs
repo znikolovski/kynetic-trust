@@ -29,6 +29,7 @@ const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/${DA_PAT
 async function main() {
   const apiKey = process.env.RATES_API_KEY;
   const daToken = process.env.DA_TOKEN;
+  const hlxToken = process.env.HLX_TOKEN;
 
   if (!apiKey) throw new Error('RATES_API_KEY env var is required');
   if (!daToken) throw new Error('DA_TOKEN env var is required');
@@ -71,18 +72,19 @@ async function main() {
   const stored = await verifyRes.json();
   process.stdout.write(`DA verification: ${stored.total ?? '?'} rows stored\n`);
 
-  // 4. Trigger EDS preview/live so the CDN picks up the change immediately
-  const previewRes = await fetch(AEM_PREVIEW, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${daToken}` },
-  });
-  if (!previewRes.ok) process.stderr.write(`AEM preview returned ${previewRes.status}\n`);
+  // 4. Trigger EDS preview/live so the CDN picks up the change immediately.
+  //    admin.hlx.page requires a GitHub PAT (HLX_TOKEN), not the IMS token.
+  const hlxHeaders = hlxToken
+    ? { Authorization: `token ${hlxToken}` }
+    : {};
 
-  const liveRes = await fetch(AEM_LIVE, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${daToken}` },
-  });
+  const previewRes = await fetch(AEM_PREVIEW, { method: 'POST', headers: hlxHeaders });
+  if (!previewRes.ok) process.stderr.write(`AEM preview returned ${previewRes.status}\n`);
+  else process.stdout.write('EDS preview triggered\n');
+
+  const liveRes = await fetch(AEM_LIVE, { method: 'POST', headers: hlxHeaders });
   if (!liveRes.ok) process.stderr.write(`AEM live returned ${liveRes.status}\n`);
+  else process.stdout.write('EDS live triggered\n');
 
   process.stdout.write(`synced ${rates.length} rates to DA ${DA_PATH}\n`);
   rates.forEach(({ key, display }) => process.stdout.write(`  ${key}: ${display}\n`));
