@@ -20,7 +20,9 @@ const DA_ORG = 'znikolovski';
 const DA_REPO = 'kynetic-trust';
 const DA_PATH = 'placeholders'; // no extension — DA serves this at /placeholders.json
 
-const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/${DA_PATH}`;
+// DA sheets are stored at path.json — POST multipart/form-data JSON to update them.
+// The HTML document at /placeholders (no extension) is unrelated; do not PUT there.
+const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/${DA_PATH}.json`;
 const AEM_PREVIEW = `https://admin.hlx.page/preview/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
 const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
 
@@ -40,29 +42,36 @@ async function main() {
   }
   const { rates } = await ratesRes.json();
 
-  // 2. Build the HTML document DA expects for a sheet.
-  //    The table name="data" matches the DA sheet tab name. EDS reads the
-  //    first <tr> as column headers (Key / Value) and subsequent rows as data,
-  //    producing { data: [{ Key, Value }] } at /placeholders.json.
-  const rows = rates
-    .map(({ key, display }) => `<tr><td>${key}</td><td>${display}</td></tr>`)
-    .join('\n');
-  const html = `<html><body><table name="data">\n<tr><th>Key</th><th>Value</th></tr>\n${rows}\n</table></body></html>`;
+  // 2. Build the DA sheet JSON payload (matching the format DA's editor POSTs).
+  //    Column headers Key/Value become the field names in /placeholders.json.
+  const sheetData = {
+    total: rates.length,
+    limit: rates.length,
+    offset: 0,
+    data: rates.map(({ key, display }) => ({ Key: key, Value: display })),
+    ':colWidths': [100, 100],
+    ':sheetname': 'data',
+    ':type': 'sheet',
+  };
 
-  // 3. Write to DA source
-  const putRes = await fetch(DA_SOURCE, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${daToken}`,
-      'Content-Type': 'text/html',
-    },
-    body: html,
+  // 3. POST to DA as multipart/form-data — the same format the DA editor uses.
+  const form = new FormData();
+  form.append(
+    'data',
+    new Blob([JSON.stringify(sheetData)], { type: 'application/json' }),
+    'blob',
+  );
+
+  const postRes = await fetch(DA_SOURCE, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${daToken}` },
+    body: form,
   });
-  if (!putRes.ok) {
-    throw new Error(`DA source PUT returned ${putRes.status}: ${await putRes.text()}`);
+  if (!postRes.ok) {
+    throw new Error(`DA source POST returned ${postRes.status}: ${await postRes.text()}`);
   }
 
-  // 4. Preview then publish so the CDN picks up the change immediately
+  // 4. Trigger EDS preview/live so the CDN picks up the change immediately
   const previewRes = await fetch(AEM_PREVIEW, {
     method: 'POST',
     headers: { Authorization: `Bearer ${daToken}` },
