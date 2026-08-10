@@ -29,10 +29,11 @@ const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/${DA_PAT
 async function main() {
   const apiKey = process.env.RATES_API_KEY;
   const daToken = process.env.DA_TOKEN;
-  const hlxToken = process.env.HLX_TOKEN;
+  const helixApiKey = process.env.HELIX_API_KEY;
 
   if (!apiKey) throw new Error('RATES_API_KEY env var is required');
   if (!daToken) throw new Error('DA_TOKEN env var is required');
+  if (!helixApiKey) throw new Error('HELIX_API_KEY env var is required');
 
   // 1. Fetch rates from the protected dashboard API
   const ratesRes = await fetch(RATES_API, {
@@ -73,10 +74,14 @@ async function main() {
   process.stdout.write(`DA verification: ${stored.total ?? '?'} rows stored\n`);
 
   // 4. Trigger EDS preview/live so the CDN picks up the change immediately.
-  //    admin.hlx.page requires a GitHub PAT (HLX_TOKEN), not the IMS token.
-  const hlxHeaders = hlxToken
-    ? { Authorization: `token ${hlxToken}` }
-    : {};
+  //    admin.hlx.page requires two separate credentials:
+  //    - Authorization: token <HELIX_API_KEY>  (EDS/Helix Admin API key, NOT a GitHub PAT)
+  //    - x-content-source-authorization: Bearer <DA_TOKEN>  (IMS token for DA content access)
+  const hlxHeaders = {
+    Authorization: `token ${helixApiKey}`,
+    'x-content-source-authorization': `Bearer ${daToken}`,
+    Accept: 'application/json',
+  };
 
   const previewRes = await fetch(AEM_PREVIEW, { method: 'POST', headers: hlxHeaders });
   if (!previewRes.ok) process.stderr.write(`AEM preview returned ${previewRes.status}\n`);
