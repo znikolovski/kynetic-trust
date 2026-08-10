@@ -165,10 +165,10 @@
       color: var(--cyan);
     }
 
-    .copied-label { display: none; }
-    .copy-label { display: block; }
-    .token-item.copied .copied-label { display: block; }
-    .token-item.copied .copy-label { display: none; }
+    .inserted-label { display: none; }
+    .insert-label { display: block; }
+    .token-item.copied .inserted-label { display: block; }
+    .token-item.copied .insert-label { display: none; }
 
     .state-msg {
       text-align: center;
@@ -213,6 +213,33 @@
     }
 
     let allTokens = [];
+    let daPort = null; // MessageChannel port from the DA library host
+
+    // DA library handshake — the host posts { ready: true, project, ... } with a port.
+    window.addEventListener('message', (e) => {
+      if (e.data?.ready && e.ports?.length) {
+        daPort = e.ports[0];
+      }
+    });
+
+    function insertToken(token) {
+      if (daPort) {
+        daPort.postMessage({ action: 'sendText', data: token });
+      } else {
+        // Standalone fallback: copy to clipboard
+        try {
+          navigator.clipboard.writeText(token);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = token;
+          ta.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+      }
+    }
 
     function renderList(tokens) {
       const list = document.getElementById('list');
@@ -234,31 +261,20 @@
         const item = document.createElement('div');
         item.className = 'token-item';
         item.setAttribute('role', 'listitem');
-        item.setAttribute('title', `Click to copy ${token}`);
+        item.setAttribute('title', `Click to insert ${token}`);
         item.innerHTML = `
           <div class="token-main">
             <span class="token-key">${token}</span>
             <span class="token-value">${value || '–'}</span>
           </div>
           <span class="token-action" aria-hidden="true">
-            <span class="copy-label">Copy</span>
-            <span class="copied-label">Copied</span>
+            <span class="insert-label">Insert</span>
+            <span class="inserted-label">Inserted</span>
           </span>
         `;
 
-        item.addEventListener('click', async () => {
-          try {
-            await navigator.clipboard.writeText(token);
-          } catch {
-            /* fallback for non-secure contexts */
-            const ta = document.createElement('textarea');
-            ta.value = token;
-            ta.style.cssText = 'position:fixed;opacity:0';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            ta.remove();
-          }
+        item.addEventListener('click', () => {
+          insertToken(token);
           item.classList.add('copied');
           setTimeout(() => item.classList.remove('copied'), 1800);
         });
