@@ -89,7 +89,7 @@ async function main() {
   if (!liveRes.ok) process.stderr.write(`AEM live returned ${liveRes.status}\n`);
   else process.stdout.write('EDS live triggered\n');
 
-  process.stdout.write(`synced ${rates.length} rates to DA ${DA_PATH}\n`);
+  process.stdout.write(`synced ${rates.length} rates to DA placeholders\n`);
   rates.forEach(({ key, display }) => process.stdout.write(`  ${key}: ${display}\n`));
 }
 
