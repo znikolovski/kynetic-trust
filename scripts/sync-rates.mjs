@@ -18,13 +18,11 @@ const RATES_API = 'https://kynetic-trust-dashboard.vercel.app/api/rates';
 
 const DA_ORG = 'znikolovski';
 const DA_REPO = 'kynetic-trust';
-const DA_PATH = 'placeholders'; // no extension — DA serves this at /placeholders.json
 
-// DA sheets are stored at path.json — POST multipart/form-data JSON to update them.
-// The HTML document at /placeholders (no extension) is unrelated; do not PUT there.
-const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/${DA_PATH}.json`;
-const AEM_PREVIEW = `https://admin.hlx.page/preview/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
-const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/${DA_PATH}`;
+const DA_SOURCE = `https://admin.da.live/source/${DA_ORG}/${DA_REPO}/placeholders.json`;
+// Structured data sheets use the full .json extension in the preview/live path
+const AEM_PREVIEW = `https://admin.hlx.page/preview/${DA_ORG}/${DA_REPO}/main/placeholders.json`;
+const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/placeholders.json`;
 
 async function main() {
   const apiKey = process.env.RATES_API_KEY;
