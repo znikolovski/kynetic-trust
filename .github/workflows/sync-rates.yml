@@ -6,7 +6,6 @@ name: Sync rates into DA placeholders
 # deploy that includes a rate change.
 #
 # Required GitHub secrets:
-#   RATES_API_KEY      — Bearer token matching RATES_API_KEY on the dashboard
 #   IMS_CLIENT_ID      — Adobe Developer Console OAuth Server-to-Server client ID
 #   IMS_CLIENT_SECRET  — Adobe Developer Console OAuth Server-to-Server client secret
 #   HELIX_API_KEY      — EDS/Helix Admin API key with preview/publish role (NOT a GitHub PAT)
@@ -45,7 +44,6 @@ jobs:
 
       - name: Sync rates to DA placeholders
         env:
-          RATES_API_KEY: ${{ secrets.RATES_API_KEY }}
           DA_TOKEN: ${{ steps.ims.outputs.da_token }}
           HELIX_API_KEY: ${{ secrets.HELIX_API_KEY }}
         run: node scripts/sync-rates.mjs

@@ -1,20 +1,19 @@
 /**
- * Syncs rates from the dashboard API into the DA placeholders sheet.
+ * Syncs rates from the dashboard's committed data/rates.json into the DA
+ * placeholders sheet.
+ *
+ * Reads directly from the GitHub raw content URL so it always reflects the
+ * latest committed value, independent of whether Vercel has redeployed yet.
  *
  * Usage:
- *   RATES_API_KEY=... DA_TOKEN=... node scripts/sync-rates.mjs
+ *   DA_TOKEN=... HELIX_API_KEY=... node scripts/sync-rates.mjs
  *
- * DA_TOKEN is an Adobe IMS access token. In CI this is generated fresh each
- * run by the workflow via the OAuth Server-to-Server client credentials grant
- * (IMS_CLIENT_ID + IMS_CLIENT_SECRET secrets) — tokens are short-lived so
- * they are never stored as secrets themselves.
- *
- * The script writes to the DA source as an HTML table (the format DA's sheet
- * editor understands), then calls the AEM Admin API to preview and publish the
- * updated document so the change propagates to the CDN immediately.
+ * DA_TOKEN is an Adobe IMS access token generated each run by the workflow
+ * via the OAuth Server-to-Server client credentials grant.
  */
 
-const RATES_API = 'https://kynetic-trust-dashboard.vercel.app/api/rates';
+const RATES_JSON_URL =
+  'https://raw.githubusercontent.com/znikolovski/kynetic-trust-dashboard/main/data/rates.json';
 
 const DA_ORG = 'znikolovski';
 const DA_REPO = 'kynetic-trust';
@@ -25,30 +24,29 @@ const AEM_PREVIEW = `https://admin.hlx.page/preview/${DA_ORG}/${DA_REPO}/main/pl
 const AEM_LIVE = `https://admin.hlx.page/live/${DA_ORG}/${DA_REPO}/main/placeholders.json`;
 
 async function main() {
-  const apiKey = process.env.RATES_API_KEY;
   const daToken = process.env.DA_TOKEN;
   const helixApiKey = process.env.HELIX_API_KEY;
 
-  if (!apiKey) throw new Error('RATES_API_KEY env var is required');
   if (!daToken) throw new Error('DA_TOKEN env var is required');
   if (!helixApiKey) throw new Error('HELIX_API_KEY env var is required');
 
-  // 1. Fetch rates from the protected dashboard API
-  const ratesRes = await fetch(RATES_API, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  });
+  // 1. Read rates directly from the committed data/rates.json on GitHub.
+  //    Using the raw URL ensures we always get the latest committed value,
+  //    regardless of whether the dashboard's Vercel deployment has rebuilt yet.
+  const ratesRes = await fetch(RATES_JSON_URL, { cache: 'no-store' });
   if (!ratesRes.ok) {
-    throw new Error(`Dashboard API returned ${ratesRes.status}: ${await ratesRes.text()}`);
+    throw new Error(`GitHub raw fetch returned ${ratesRes.status}`);
   }
-  const { rates } = await ratesRes.json();
+  const ratesMap = await ratesRes.json(); // { 'standard-apy': '2.45%', ... }
+  const entries = Object.entries(ratesMap);
 
   // 2. Build the DA sheet JSON payload per the DA Admin API docs.
   //    Field names in data[] become the column names served by /placeholders.json.
   const sheetData = {
-    total: rates.length,
+    total: entries.length,
     offset: 0,
-    limit: rates.length,
-    data: rates.map(({ key, display }) => ({ Key: key, Value: display })),
+    limit: entries.length,
+    data: entries.map(([key, display]) => ({ Key: key, Value: display })),
     ':type': 'sheet',
   };
 
@@ -89,8 +87,8 @@ async function main() {
   if (!liveRes.ok) process.stderr.write(`AEM live returned ${liveRes.status}\n`);
   else process.stdout.write('EDS live triggered\n');
 
-  process.stdout.write(`synced ${rates.length} rates to DA placeholders\n`);
-  rates.forEach(({ key, display }) => process.stdout.write(`  ${key}: ${display}\n`));
+  process.stdout.write(`synced ${entries.length} rates to DA placeholders\n`);
+  entries.forEach(([key, display]) => process.stdout.write(`  ${key}: ${display}\n`));
 }
 
 main().catch((err) => {
