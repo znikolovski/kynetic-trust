@@ -109,7 +109,8 @@ export default function decorate(block) {
   // The nearest section element — hidden initially when there's no static
   // fallback (widget-only sections), so unauthenticated users see no blank gap.
   const section = block.closest('.section');
-  if (!fallback && section) section.hidden = true;
+  const noFallback = !fallback && section;
+  if (noFallback) section.hidden = true;
 
   const tagName = `sb-widget-${widgetName}`;
 
@@ -161,11 +162,18 @@ export default function decorate(block) {
       });
   };
 
-  const observer = new IntersectionObserver((entries) => {
-    if (entries.some((entry) => entry.isIntersecting)) {
-      observer.disconnect();
-      activate();
-    }
-  }, { rootMargin: '200px 0px' });
-  observer.observe(block);
+  if (noFallback) {
+    // Section is pre-hidden; IntersectionObserver would never fire on a
+    // hidden element. Activate immediately so the widget can signal whether
+    // it has content, which determines whether the section gets shown.
+    activate();
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        observer.disconnect();
+        activate();
+      }
+    }, { rootMargin: '200px 0px' });
+    observer.observe(block);
+  }
 }
