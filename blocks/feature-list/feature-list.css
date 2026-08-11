@@ -117,10 +117,3 @@
 .feature-list.cards .feature-list-item-secondary .feature-list-icon .material-symbol {
   color: var(--color-secondary);
 }
-
-/* Benefits modifier: body text is one blank-line-delimited blob (e.g. CF
-   keyBenefits.plaintext), not discrete paragraphs — preserve its line
-   breaks without collapsing them like normal prose. */
-.feature-list.cards .feature-list-item-benefits p {
-  white-space: pre-line;
-}
