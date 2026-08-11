@@ -1,24 +1,26 @@
-name: Sync rates into DA placeholders
+name: Preview block library in DA
 
-# Keeps the DA placeholders sheet in sync with the live rates served by
-# the dashboard API. Runs on a schedule and on repository_dispatch so the
-# dashboard's own deploy workflow can trigger an immediate sync after a
-# deploy that includes a rate change.
+# Keeps block HTML examples and page templates previewed in AEM so they
+# render correctly in the DA Experience Workspace block library.
+#
+# Triggers automatically when block JS/CSS or the library manifests change,
+# and can also be run manually via workflow_dispatch.
 #
 # Required GitHub secrets:
 #   IMS_CLIENT_ID      — Adobe Developer Console OAuth Server-to-Server client ID
 #   IMS_CLIENT_SECRET  — Adobe Developer Console OAuth Server-to-Server client secret
-#   HELIX_API_KEY      — EDS/Helix Admin API key with preview/publish role (NOT a GitHub PAT)
+#   HELIX_API_KEY      — EDS/Helix Admin API key with preview role (NOT a GitHub PAT)
 
 on:
-  schedule:
-    - cron: '0 * * * *'
-  repository_dispatch:
-    types: [rates-changed]
+  push:
+    branches: [main]
+    paths:
+      - 'blocks/**'
+      - 'library/**'
   workflow_dispatch:
 
 jobs:
-  sync:
+  preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,8 +44,8 @@ jobs:
           echo "::add-mask::$token"
           echo "da_token=$token" >> "$GITHUB_OUTPUT"
 
-      - name: Sync rates to DA placeholders
+      - name: Preview blocks and templates in DA
         env:
           DA_TOKEN: ${{ steps.ims.outputs.da_token }}
           HELIX_API_KEY: ${{ secrets.HELIX_API_KEY }}
-        run: node scripts/sync-rates.mjs
+        run: node scripts/preview-blocks.mjs
