@@ -29,9 +29,9 @@
   },
   "transaction-summary": {
     "appOrigin": "https://kynetic-trust-dashboard.vercel.app",
-    "file": "/widgets/transaction-summary-N4TRNAI2.js",
-    "version": "b1019b9-1784165557078",
-    "sourceCommit": "b1019b9",
-    "releasedAt": "2026-07-16T11:05:57.078Z"
+    "file": "/widgets/transaction-summary-PT7JK7G2.js",
+    "version": "00e341f-1786428500693",
+    "sourceCommit": "00e341f22306ec39b44de3b54f683d5892602640",
+    "releasedAt": "2026-08-11T06:09:48.969Z"
   }
 }
