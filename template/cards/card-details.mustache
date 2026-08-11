@@ -1,40 +1,8 @@
-<!--
-  Mustache template for a card-details page (/credit-cards/<card>), derived
-  from content/credit-cards/premium.html. Renders EDS block markup —
-  product-hero, feature-list (x2), cta — the same structural contract as
-  every other page in content/.
-
-  Render context: pass the FULL payload envelope as the Mustache view — do
-  NOT unwrap to `data.creditCardByPath.item` first. Every placeholder below
-  spells out its complete path from the payload root, e.g.:
-    Mustache.render(template, payload)
-  Sample payload this was built against:
-    {
-      "data": { "creditCardByPath": { "item": {
-        "name": "SecurBank PREMIUM",
-        "additionalCardHolderFee": "No additional cardholder fee",
-        "monthlyFee": "No monthly fee if you spend at least $4,000 in your statement period. Otherwise, the monthly fee is $35.",
-        "internationalTransactionFee": "No Foreign Transaction Fee",
-        "cardImage": {
-          "_publishUrl": "https://publish-p115476-e1135027.adobeaemcloud.com/content/dam/securbank/en/cards/Card-BASIC.png",
-          "_dynamicUrl": "/adobe/dynamicmedia/deliver/dm-aid--5a39b729-508f-4495-8f40-cdbf3b05e975/Card_BASIC.jpg"
-        },
-        "keyBenefits": {
-          "plaintext": "No Foreign Transaction Fee\n\nLate Fee Waiver\n\nNo Penalty APR\n\nCash back in case of robbery.\n\n",
-          "html": "<ul>\n<li>No Foreign Transaction Fee</li>\n<li>Late Fee Waiver</li>\n<li>No Penalty APR</li>\n<li>Cash back in case of robbery.</li>\n</ul>"
-        }
-      } } }
-    }
-
-  Placeholders are named for the full, absolute payload path (no assumption
-  about what's unwrapped before rendering):
-    {{data.creditCardByPath.item.name}}
-    {{data.creditCardByPath.item.cardImage._publishUrl}}
-    {{data.creditCardByPath.item.monthlyFee}}                  (verbatim disclosure text — never paraphrase)
-    {{data.creditCardByPath.item.additionalCardHolderFee}}     (verbatim disclosure text — never paraphrase)
-    {{data.creditCardByPath.item.internationalTransactionFee}} (verbatim disclosure text — never paraphrase)
-    {{{data.creditCardByPath.item.keyBenefits.html}}}          (already-rendered <ul><li> markup — unescaped, used as-is; plaintext is intentionally unused)
--->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+  </head>
 <body>
   <header></header>
   <main>
@@ -103,3 +71,4 @@
   </main>
   <footer></footer>
 </body>
+</html>
