@@ -1,0 +1,94 @@
+<!--
+  DA-authorable content for /credit-cards/premium — card details page.
+  Content is bound 1:1 to the AEM Content Fragment JSON payload for this
+  card (data.card.item). Field -> block mapping:
+    name                         -> product-hero h1
+    cardImage._publishUrl        -> product-hero image
+    monthlyFee                   -> "Fees at a Glance" feature-list card (verbatim)
+    additionalCardHolderFee      -> "Fees at a Glance" feature-list card (verbatim)
+    internationalTransactionFee  -> "Fees at a Glance" feature-list card (verbatim)
+    keyBenefits.plaintext        -> "Key Benefits" feature-list, split on blank lines
+  Fee copy is kept verbatim from the payload — these are disclosure strings,
+  not marketing copy, so they are never paraphrased or shortened. Replace the
+  cardImage src with the card's real _publishUrl/_dynamicUrl when authoring
+  another card from this same template.
+-->
+<body>
+  <header></header>
+  <main>
+    <div>
+      <div class="product-hero">
+        <div><div><p>SecurBank Cards</p></div></div>
+        <div><div><h1>SecurBank <em>PREMIUM</em></h1></div></div>
+        <div><div><p>A rewards card built around flexibility &mdash; spend to waive the monthly fee, skip foreign transaction charges, and travel without surprises.</p></div></div>
+        <div><div><p><strong><a href="/join">Apply Now</a></strong> <em><a href="/credit-cards">Compare Cards</a></em></p></div></div>
+        <div><div><img src="https://publish-p115476-e1135027.adobeaemcloud.com/content/dam/securbank/en/cards/Card-BASIC.png" alt="SecurBank PREMIUM credit card"></div></div>
+      </div>
+    </div>
+    <div class="surface text-center">
+      <div>
+        <h2>Fees at a Glance</h2>
+        <p>Every fee this card can charge, straight from the card's rate &amp; fee schedule.</p>
+      </div>
+      <div class="feature-list cards">
+        <div>
+          <div>payments</div>
+          <div>Monthly Fee</div>
+          <div>No monthly fee if you spend at least $4,000 in your statement period. Otherwise, the monthly fee is $35.</div>
+        </div>
+        <div>
+          <div>person_add</div>
+          <div>Additional Cardholder</div>
+          <div>No additional cardholder fee</div>
+        </div>
+        <div>
+          <div>public</div>
+          <div>International Transactions</div>
+          <div>No Foreign Transaction Fee</div>
+        </div>
+      </div>
+    </div>
+    <div class="lowest text-center">
+      <div>
+        <h2>Key Benefits</h2>
+      </div>
+      <div class="feature-list cards center">
+        <div>
+          <div>public</div>
+          <div>No Foreign Transaction Fee</div>
+        </div>
+        <div>
+          <div>schedule</div>
+          <div>Late Fee Waiver</div>
+        </div>
+        <div>
+          <div>gpp_good</div>
+          <div>No Penalty APR</div>
+        </div>
+        <div>
+          <div>security</div>
+          <div>Cash back in case of robbery.</div>
+        </div>
+      </div>
+    </div>
+    <div class="lowest">
+      <div class="cta prominent centered">
+        <div><div><img src="/media/cards-cta-bg.jpg" alt=""></div></div>
+        <div><div><h2>Ready for <em>PREMIUM</em>?</h2></div></div>
+        <div><div><p>Apply in minutes and start saving on fees today.</p></div></div>
+        <div><div><p><strong><a href="/join">Apply Now &rarr;</a></strong></p></div></div>
+      </div>
+    </div>
+    <div class="metadata">
+      <div>
+        <div>Title</div>
+        <div>SecurBank | PREMIUM Credit Card</div>
+      </div>
+      <div>
+        <div>Description</div>
+        <div>See fees and benefits for the SecurBank PREMIUM credit card, including monthly fee waiver terms, cardholder fees, and foreign transaction policy.</div>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+</body>

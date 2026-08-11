@@ -1,0 +1,110 @@
+<!--
+  Mustache template for a card-details page (/credit-cards/<card>), derived
+  from content/credit-cards/premium.html. Renders EDS block markup —
+  product-hero, feature-list (x2), cta — the same structural contract as
+  every other page in content/.
+
+  Render context: pass the FULL payload envelope as the Mustache view — do
+  NOT unwrap to `data.card.item` first. Every placeholder below spells out
+  its complete path from the payload root, e.g.:
+    Mustache.render(template, payload)
+  Sample payload this was built against:
+    {
+      "data": { "card": { "item": {
+        "name": "SecurBank PREMIUM",
+        "additionalCardHolderFee": "No additional cardholder fee",
+        "monthlyFee": "No monthly fee if you spend at least $4,000 in your statement period. Otherwise, the monthly fee is $35.",
+        "internationalTransactionFee": "No Foreign Transaction Fee",
+        "cardImage": {
+          "_publishUrl": "https://publish-p115476-e1135027.adobeaemcloud.com/content/dam/securbank/en/cards/Card-BASIC.png",
+          "_dynamicUrl": "/adobe/dynamicmedia/deliver/dm-aid--5a39b729-508f-4495-8f40-cdbf3b05e975/Card_BASIC.jpg"
+        },
+        "keyBenefits": { "plaintext": "No Foreign Transaction Fee\n\nLate Fee Waiver\n\nNo Penalty APR\n\nCash back in case of robbery.\n\n" }
+      } } }
+    }
+
+  Placeholders are named for the full, absolute payload path (no assumption
+  about what's unwrapped before rendering):
+    {{data.card.item.name}}
+    {{data.card.item.cardImage._publishUrl}}
+    {{data.card.item.monthlyFee}}                  (verbatim disclosure text — never paraphrase)
+    {{data.card.item.additionalCardHolderFee}}     (verbatim disclosure text — never paraphrase)
+    {{data.card.item.internationalTransactionFee}} (verbatim disclosure text — never paraphrase)
+    {{data.card.item.keyBenefits.plaintext}}
+
+  keyBenefits.plaintext is one blank-line-delimited blob, not a list — the
+  Key Benefits card carries a `benefits` modifier cell (4th row cell,
+  matching feature-list.js's modifier convention) so feature-list.css can
+  apply `white-space: pre-line` externally — no inline `style` attribute —
+  and each blank-line-separated benefit still breaks onto its own line,
+  without inventing a synthetic per-item array the payload doesn't have.
+-->
+<body>
+  <header></header>
+  <main>
+    <div>
+      <div class="product-hero">
+        <div><div><p>SecurBank Cards</p></div></div>
+        <div><div><h1><em>{{data.card.item.name}}</em></h1></div></div>
+        <div><div><p>Everything you need to know about {{data.card.item.name}} &mdash; fees, benefits, and terms at a glance.</p></div></div>
+        <div><div><p><strong><a href="/join">Apply Now</a></strong> <em><a href="/credit-cards">Compare Cards</a></em></p></div></div>
+        <div><div><img src="{{{data.card.item.cardImage._publishUrl}}}" alt="{{data.card.item.name}} credit card"></div></div>
+      </div>
+    </div>
+    <div class="surface text-center">
+      <div>
+        <h2>Fees at a Glance</h2>
+        <p>Every fee this card can charge, straight from the card's rate &amp; fee schedule.</p>
+      </div>
+      <div class="feature-list cards">
+        <div>
+          <div>payments</div>
+          <div>Monthly Fee</div>
+          <div>{{data.card.item.monthlyFee}}</div>
+        </div>
+        <div>
+          <div>person_add</div>
+          <div>Additional Cardholder</div>
+          <div>{{data.card.item.additionalCardHolderFee}}</div>
+        </div>
+        <div>
+          <div>public</div>
+          <div>International Transactions</div>
+          <div>{{data.card.item.internationalTransactionFee}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="lowest text-center">
+      <div>
+        <h2>Key Benefits</h2>
+      </div>
+      <div class="feature-list cards center">
+        <div>
+          <div>verified</div>
+          <div>What's included</div>
+          <div>{{data.card.item.keyBenefits.plaintext}}</div>
+          <div>benefits</div>
+        </div>
+      </div>
+    </div>
+    <div class="lowest">
+      <div class="cta prominent centered">
+        <div><div><img src="/media/cards-cta-bg.jpg" alt=""></div></div>
+        <div><div><h2>Ready for <em>{{data.card.item.name}}</em>?</h2></div></div>
+        <div><div><p>Apply in minutes and start saving on fees today.</p></div></div>
+        <div><div><p><strong><a href="/join">Apply Now &rarr;</a></strong></p></div></div>
+      </div>
+    </div>
+    <div class="metadata">
+      <div>
+        <div>Title</div>
+        <div>{{data.card.item.name}} | Credit Card Details</div>
+      </div>
+      <div>
+        <div>Description</div>
+        <div>See fees and benefits for {{data.card.item.name}}, including monthly fee waiver terms, cardholder fees, and foreign transaction policy.</div>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+</body>
