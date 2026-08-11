@@ -423,6 +423,12 @@ main > .section.narrow > div {
   }
 }
 
+/* CTA spacing inside sections that stack blocks vertically (mobile and
+   any section that isn't features-cta) */
+main > .section > .cta-wrapper {
+  margin-top: 40px;
+}
+
 /* text-center: center the intro copy of a section and make the h2/h3 cyan.
    Placed last so it outranks the general > div rules above without fighting them.
    Uses modern :not() list notation (Selectors 4). */
