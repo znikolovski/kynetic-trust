@@ -1,8 +1,3 @@
-.nextjs-widget-mount {
-  min-height: 200px;
-}
-
-.nextjs-widget-mount sb-widget-comparison-table,
 .nextjs-widget-mount [class^="sb-widget-"] {
   display: block;
 }

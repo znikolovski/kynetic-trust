@@ -106,6 +106,11 @@ export default function decorate(block) {
   mount.hidden = true;
   block.append(mount);
 
+  // The nearest section element — hidden initially when there's no static
+  // fallback (widget-only sections), so unauthenticated users see no blank gap.
+  const section = block.closest('.section');
+  if (!fallback && section) section.hidden = true;
+
   const tagName = `sb-widget-${widgetName}`;
 
   const activate = () => {
@@ -126,15 +131,28 @@ export default function decorate(block) {
         el.dataset.apiBase = appOrigin;
 
         const timeout = setTimeout(() => {
-          // never arrived — leave the static fallback in place.
+          // Never signalled — widget failed to load. Ensure the section stays
+          // hidden (it was pre-hidden when there was no static fallback).
           el.remove();
         }, READY_TIMEOUT_MS);
 
+        let fallbackRemoved = false;
         el.addEventListener('sb-widget-ready', () => {
           clearTimeout(timeout);
           mount.hidden = false;
-          fallback?.remove();
-        }, { once: true });
+          if (section) section.hidden = false;
+          if (!fallbackRemoved) {
+            fallback?.remove();
+            fallbackRemoved = true;
+          }
+        });
+
+        el.addEventListener('sb-widget-empty', () => {
+          // Widget has no content to show (e.g. user not authenticated).
+          // Keep the section hidden so no blank space is reserved.
+          if (section) section.hidden = true;
+          mount.hidden = true;
+        });
 
         mount.append(el);
       })
