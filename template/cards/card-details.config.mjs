@@ -38,20 +38,29 @@ export default {
    */
   pages: {
     pathPrefix: '/cards/',
-    // Static fallback — extend as new cards are added, or remove once
-    // GraphQL discovery is configured.
+    // Static fallback — used when GraphQL discovery is unavailable or
+    // as a known-good baseline alongside discovery results.
     paths: [
       '/cards/securbank-infinite',
       '/cards/securbank-classic',
     ],
-    // Uncomment and fill in once the AEM GraphQL endpoint is available:
-    // discovery: {
-    //   endpoint: 'https://author-xxx.adobeaemcloud.com/content/_cq_graphql/kynetic-trust/endpoint.json',
-    //   query: `{ creditCardList { items { _path } } }`,
-    //   slugPath: 'data.creditCardList.items[*]._path',
-    //   // slugPath is a dot-notation path into the JSON response; the last
-    //   // segment of each matched value is used as the slug.
-    // },
+    // AEM GraphQL list query to discover all cards dynamically.
+    // The single-card render endpoint is:
+    //   /graphql/execute.json/securbank/CreditCardDetailsByPath;path=/content/dam/securbank/en/cards/{{id}}
+    // Discovery uses the companion list query (same persisted-query config
+    // in AEM, different query name). If CreditCardList doesn't exist yet,
+    // create it in the AEM GraphQL console using the query below.
+    discovery: {
+      endpoint: 'https://publish-p115476-e1135027.adobeaemcloud.com/graphql/execute.json/securbank/CreditCardList',
+      // Inline query — only used if the persisted endpoint above returns 404.
+      // Pass as a POST body to the generic endpoint instead:
+      //   https://publish-p115476-e1135027.adobeaemcloud.com/content/_cq_graphql/securbank/endpoint.json
+      fallbackQuery: `{ creditCardList { items { _path } } }`,
+      // Dot-notation into the AEM response envelope: data → model list → items → _path
+      slugPath: 'data.creditCardList.items[*]._path',
+      // _path looks like /content/dam/securbank/en/cards/securbank-infinite
+      // — the last segment becomes the EDS page slug.
+    },
   },
 
   sections: [
