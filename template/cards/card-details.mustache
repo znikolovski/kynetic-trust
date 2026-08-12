@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{{title}}</title>
+    <title>{{data.creditCardByPath.item.name}} | Credit Card Details</title>
   </head>
 <body>
   <header></header>
@@ -16,38 +16,18 @@
       </div>
     </div>
     <div class="surface text-center">
-      <div>
-        <h2>Fees at a Glance</h2>
-        <p>Every fee this card can charge, straight from the card's rate &amp; fee schedule.</p>
-      </div>
+      <h2>Fees at a Glance</h2>
+      <p>Every fee this card can charge, straight from the card's rate &amp; fee schedule.</p>
       <div class="feature-list cards">
-        <div>
-          <div>payments</div>
-          <div>Monthly Fee</div>
-          <div>{{data.creditCardByPath.item.monthlyFee}}</div>
-        </div>
-        <div>
-          <div>person_add</div>
-          <div>Additional Cardholder</div>
-          <div>{{data.creditCardByPath.item.additionalCardHolderFee}}</div>
-        </div>
-        <div>
-          <div>public</div>
-          <div>International Transactions</div>
-          <div>{{data.creditCardByPath.item.internationalTransactionFee}}</div>
-        </div>
+        <div><div>payments</div><div>Monthly Fee</div><div>{{data.creditCardByPath.item.monthlyFee}}</div></div>
+        <div><div>person_add</div><div>Additional Cardholder</div><div>{{data.creditCardByPath.item.additionalCardHolderFee}}</div></div>
+        <div><div>public</div><div>International Transactions</div><div>{{data.creditCardByPath.item.internationalTransactionFee}}</div></div>
       </div>
     </div>
     <div class="lowest text-center">
-      <div>
-        <h2>Key Benefits</h2>
-      </div>
+      <h2>Key Benefits</h2>
       <div class="feature-list cards center">
-        <div>
-          <div>verified</div>
-          <div>What's included</div>
-          <div>{{{data.creditCardByPath.item.keyBenefits.html}}}</div>
-        </div>
+        <div><div>verified</div><div>What's included</div><div>{{{data.creditCardByPath.item.keyBenefits.html}}}</div></div>
       </div>
     </div>
     <div class="lowest">
