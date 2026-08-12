@@ -22,6 +22,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run check:templates
 
   widget-preview-check:
     # Only meaningful for PRs that actually touch widgets.json — running it
