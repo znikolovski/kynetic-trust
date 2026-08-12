@@ -22,10 +22,19 @@
  *   3. Run this script — all mustache files that use that block are regenerated
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'fs';
+import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { globSync } from 'fs';
+
+function findFiles(dir, pattern) {
+  const results = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) results.push(...findFiles(full, pattern));
+    else if (pattern.test(entry.name)) results.push(full);
+  }
+  return results;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -102,8 +111,8 @@ ${sections}
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const configPaths = globSync('template/**/*.config.mjs', { cwd: ROOT })
-    .map((p) => resolve(ROOT, p));
+  const templateDir = resolve(ROOT, 'template');
+  const configPaths = findFiles(templateDir, /\.config\.mjs$/);
 
   if (configPaths.length === 0) {
     process.stdout.write('No template configs found.\n');

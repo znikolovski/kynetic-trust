@@ -19,9 +19,19 @@
  *   HELIX_API_KEY — EDS/Helix Admin API key with preview+live role
  */
 
-import { resolve, dirname } from 'path';
+import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { globSync } from 'fs';
+import { readdirSync } from 'fs';
+
+function findFiles(dir, pattern) {
+  const results = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) results.push(...findFiles(full, pattern));
+    else if (pattern.test(entry.name)) results.push(full);
+  }
+  return results;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -149,8 +159,8 @@ async function main() {
   // Optional filter: only process configs whose filename matches an argument
   const filter = new Set(process.argv.slice(2).map((a) => a.toLowerCase()));
 
-  const configPaths = globSync('template/**/*.config.mjs', { cwd: ROOT })
-    .map((p) => resolve(ROOT, p))
+  const templateDir = resolve(ROOT, 'template');
+  const configPaths = findFiles(templateDir, /\.config\.mjs$/)
     .filter((p) => {
       if (filter.size === 0) return true;
       const name = p.split('/').pop().replace('.config.mjs', '').toLowerCase();
