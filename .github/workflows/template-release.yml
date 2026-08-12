@@ -1,0 +1,63 @@
+name: Regenerate and re-preview template pages
+
+# Runs when block builders or template configs change on main.
+# Regenerates any stale mustache files (safety net — CI should have
+# already caught drift), then re-previews and publishes every EDS page
+# produced by the updated templates so the CDN serves fresh HTML.
+#
+# Can also be triggered manually to force-refresh template pages without
+# a code change (useful after an AEM content fragment is added or removed).
+#
+# Required GitHub secrets:
+#   IMS_CLIENT_ID      — Adobe Developer Console OAuth Server-to-Server client ID
+#   IMS_CLIENT_SECRET  — Adobe Developer Console OAuth Server-to-Server client secret
+#   HELIX_API_KEY      — EDS/Helix Admin API key with preview+live role
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'blocks/**/*.template.mjs'
+      - 'template/**/*.config.mjs'
+  workflow_dispatch:
+    inputs:
+      templates:
+        description: >
+          Space-separated template names to process (e.g. "card-details").
+          Leave blank to process all templates.
+        required: false
+        default: ''
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate mustache templates
+        run: node scripts/generate-templates.mjs
+
+      - name: Generate IMS access token
+        id: ims
+        env:
+          IMS_CLIENT_ID: ${{ secrets.IMS_CLIENT_ID }}
+          IMS_CLIENT_SECRET: ${{ secrets.IMS_CLIENT_SECRET }}
+        run: |
+          token=$(curl -sf -X POST https://ims-na1.adobelogin.com/ims/token/v3 \
+            -d "grant_type=client_credentials" \
+            -d "client_id=$IMS_CLIENT_ID" \
+            -d "client_secret=$IMS_CLIENT_SECRET" \
+            -d "scope=AdobeID,openid,read_organizations,additional_info.projectedProductContext,additional_info.roles,adobeio_api,read_client_secret,manage_client_secrets,read_pc.dma_aem_ams,target_sdk,aem.folders,aem.assets.author,aem.cdn,aem.frontend.all,session,profile" \
+            | jq -r .access_token)
+          echo "::add-mask::$token"
+          echo "da_token=$token" >> "$GITHUB_OUTPUT"
+
+      - name: Re-preview and publish template pages
+        env:
+          DA_TOKEN: ${{ steps.ims.outputs.da_token }}
+          HELIX_API_KEY: ${{ secrets.HELIX_API_KEY }}
+        run: node scripts/preview-template-pages.mjs ${{ inputs.templates }}

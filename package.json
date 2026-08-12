@@ -9,7 +9,8 @@
     "lint": "npm run lint:js && npm run lint:css",
     "lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
     "generate:templates": "node scripts/generate-templates.mjs",
-    "check:templates": "node scripts/generate-templates.mjs --check"
+    "check:templates": "node scripts/generate-templates.mjs --check",
+    "preview:templates": "node scripts/preview-template-pages.mjs"
   },
   "repository": {
     "type": "git",

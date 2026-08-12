@@ -11,6 +11,8 @@
  *   - static copy that is the same for every card
  *
  * Run `node scripts/generate-templates.mjs` to regenerate card-details.mustache.
+ * Run `node scripts/preview-template-pages.mjs` to re-preview all pages after
+ * a template change so the CDN serves the updated mustache-rendered HTML.
  */
 
 const item = 'data.creditCardByPath.item';
@@ -18,6 +20,39 @@ const item = 'data.creditCardByPath.item';
 export default {
   title: `{{${item}.name}} | Credit Card Details`,
   description: `See fees and benefits for {{${item}.name}}, including monthly fee waiver terms, cardholder fees, and foreign transaction policy.`,
+
+  /**
+   * Pages generated from this template. Used by preview-template-pages.mjs
+   * to re-preview EDS pages after the mustache is regenerated.
+   *
+   * Two modes — use whichever fits:
+   *
+   *   paths    — static list; good for small, stable sets of pages.
+   *
+   *   discovery.graphql  — AEM GraphQL endpoint + query + JSONPath-style
+   *                        field to extract slugs from the response.
+   *                        The script fetches this at runtime so the list
+   *                        stays current without any manual maintenance.
+   *
+   * Both can coexist; paths and discovered slugs are merged and deduped.
+   */
+  pages: {
+    pathPrefix: '/cards/',
+    // Static fallback — extend as new cards are added, or remove once
+    // GraphQL discovery is configured.
+    paths: [
+      '/cards/securbank-infinite',
+      '/cards/securbank-classic',
+    ],
+    // Uncomment and fill in once the AEM GraphQL endpoint is available:
+    // discovery: {
+    //   endpoint: 'https://author-xxx.adobeaemcloud.com/content/_cq_graphql/kynetic-trust/endpoint.json',
+    //   query: `{ creditCardList { items { _path } } }`,
+    //   slugPath: 'data.creditCardList.items[*]._path',
+    //   // slugPath is a dot-notation path into the JSON response; the last
+    //   // segment of each matched value is used as the slug.
+    // },
+  },
 
   sections: [
     // ─── Hero ───────────────────────────────────────────────────────────────
