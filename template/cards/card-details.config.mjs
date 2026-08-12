@@ -41,8 +41,12 @@ export default {
     // Static fallback — used when GraphQL discovery is unavailable or
     // as a known-good baseline alongside discovery results.
     paths: [
-      '/cards/securbank-infinite',
-      '/cards/securbank-classic',
+      '/cards/secur-bank-premium',
+      '/cards/securbank-business-pro',
+      '/cards/securbank-cashback-everyday',
+      '/cards/securbank-secured-builder',
+      '/cards/securbank-student-starter',
+      '/cards/securbank-travel-elite',
     ],
     // AEM GraphQL list query to discover all cards dynamically.
     // The single-card render endpoint is:
@@ -51,14 +55,15 @@ export default {
     // in AEM, different query name). If CreditCardList doesn't exist yet,
     // create it in the AEM GraphQL console using the query below.
     discovery: {
-      endpoint: 'https://publish-p115476-e1135027.adobeaemcloud.com/graphql/execute.json/securbank/CreditCardList',
-      // Inline query — only used if the persisted endpoint above returns 404.
-      // Pass as a POST body to the generic endpoint instead:
-      //   https://publish-p115476-e1135027.adobeaemcloud.com/content/_cq_graphql/securbank/endpoint.json
-      fallbackQuery: `{ creditCardList { items { _path } } }`,
+      // The auto-generated persisted CreditCardList query doesn't include
+      // _path, so we use the generic GraphQL endpoint with an inline query
+      // that explicitly requests it.
+      endpoint: 'https://publish-p115476-e1135027.adobeaemcloud.com/content/_cq_graphql/securbank/endpoint.json',
+      method: 'POST',
+      query: '{ creditCardList { items { _path } } }',
       // Dot-notation into the AEM response envelope: data → model list → items → _path
       slugPath: 'data.creditCardList.items[*]._path',
-      // _path looks like /content/dam/securbank/en/cards/securbank-infinite
+      // _path looks like /content/dam/securbank/en/cards/securbank-premium
       // — the last segment becomes the EDS page slug.
     },
   },

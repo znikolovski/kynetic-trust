@@ -59,42 +59,31 @@ function resolvePath(obj, path) {
 }
 
 async function discoverPaths(discovery) {
-  const { endpoint, fallbackQuery, slugPath } = discovery;
+  const {
+    endpoint, method = 'GET', query, slugPath,
+  } = discovery;
 
   let json;
   try {
-    // AEM persisted queries are served as GET requests (no body).
-    const res = await fetch(endpoint, { headers: { Accept: 'application/json' } });
-
-    if (!res.ok && fallbackQuery) {
-      // Persisted query not found — fall back to an inline POST to the
-      // generic GraphQL endpoint on the same host.
-      process.stderr.write(`Persisted query ${endpoint} returned ${res.status}, trying inline query.\n`);
-      const url = new URL(endpoint);
-      const genericEndpoint = `${url.origin}/content/_cq_graphql/${url.pathname.split('/')[3]}/endpoint.json`;
-      const fallback = await fetch(genericEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ query: fallbackQuery }),
-      });
-      if (!fallback.ok) {
-        process.stderr.write(`Inline GraphQL query also failed (${fallback.status}). Using static paths only.\n`);
-        return [];
-      }
-      json = await fallback.json();
-    } else if (!res.ok) {
+    const fetchOpts = { headers: { Accept: 'application/json' } };
+    if (method === 'POST' && query) {
+      fetchOpts.method = 'POST';
+      fetchOpts.headers['Content-Type'] = 'application/json';
+      fetchOpts.body = JSON.stringify({ query });
+    }
+    const res = await fetch(endpoint, fetchOpts);
+    if (!res.ok) {
       process.stderr.write(`GraphQL discovery returned ${res.status} from ${endpoint}. Using static paths only.\n`);
       return [];
-    } else {
-      json = await res.json();
     }
+    json = await res.json();
   } catch (err) {
     process.stderr.write(`GraphQL discovery failed: ${err.message}. Using static paths only.\n`);
     return [];
   }
 
   const values = resolvePath(json, slugPath);
-  // _path looks like /content/dam/securbank/en/cards/securbank-infinite
+  // _path looks like /content/dam/securbank/en/cards/securbank-premium
   // → use the last segment as the EDS page slug.
   return values.map((v) => String(v).split('/').pop()).filter(Boolean);
 }
