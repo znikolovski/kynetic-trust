@@ -10,17 +10,18 @@ export default function decorate(block) {
   copy.className = 'article-header-copy';
   const byline = document.createElement('div');
   byline.className = 'article-header-byline';
+  let heroPicture = null;
 
   rows.forEach((row) => {
     const cells = [...row.children];
 
     // Background hero image: first single-cell row with an image, before copy is populated
-    const bgMedia = cells.length === 1 && !copy.children.length
-      ? (row.querySelector('picture') ?? row.querySelector('img'))
-      : null;
-    if (bgMedia) {
-      block.append(bgMedia);
-      return;
+    if (!heroPicture && cells.length === 1 && !copy.children.length) {
+      const media = row.querySelector('picture') ?? row.querySelector('img');
+      if (media) {
+        heroPicture = media;
+        return;
+      }
     }
 
     if (cells.length === 2 && cells.every((c) => !c.querySelector('img')) && !row.querySelector('h1, h2')) {
@@ -48,6 +49,7 @@ export default function decorate(block) {
   });
 
   block.textContent = '';
+  if (heroPicture) block.append(heroPicture);
   const overlay = document.createElement('div');
   overlay.className = 'article-header-overlay';
   overlay.append(meta, copy);
