@@ -15,14 +15,17 @@ import { createOptimizedPicture, toClassName } from '../../scripts/aem.js';
  * template/cards/card-details.mustache):
  *   { data: { creditCardList: { items: [{
  *     name,
+ *     _path,
  *     cardImage: { _publishUrl, _dynamicUrl },
  *     keyBenefits: { plaintext },
  *   }] } } }
- * No fee fields or path/slug field are present on this query — the detail
- * link below is reconstructed from `name` (see slugFor). `monthlyFee` /
- * `internationalTransactionFee` / `keyBenefits.html` are still read
- * opportunistically in case a differently-configured persisted query
- * includes them (that richer shape matches `creditCardByPath`).
+ * `_path` (e.g. "/content/dam/securbank/en/cards/secur-bank-premium") is
+ * the AEM Content Fragment path — its last segment is the detail-page
+ * slug used by the templated /cards/{slug} pages (see slugFor).
+ * `monthlyFee` / `internationalTransactionFee` / `keyBenefits.html` are
+ * still read opportunistically in case a differently-configured
+ * persisted query includes them (that richer shape matches
+ * `creditCardByPath`).
  */
 
 const DEFAULT_ENDPOINT = 'https://publish-p115476-e1135027.adobeaemcloud.com/graphql/execute.json/securbank/AllCreditCards';
@@ -39,16 +42,17 @@ function findItems(payload) {
 }
 
 /**
- * Best-effort detail-page slug. No path/slug field is returned by this
- * query, so fall back to the name with the "SecurBank " brand prefix
- * stripped — matches the one confirmed live page, /credit-cards/premium
- * (from "SecurBank PREMIUM").
+ * Detail-page slug, derived from the CF `_path`'s last segment (e.g.
+ * "/content/dam/securbank/en/cards/secur-bank-premium" → "secur-bank-premium",
+ * matching the templated pages under /cards/ — see
+ * template/cards/card-details.config.mjs). Falls back to the name (with the
+ * "SecurBank " brand prefix stripped) only if `_path` is missing.
  */
 function slugFor(item) {
   // eslint-disable-next-line no-underscore-dangle -- AEM system field name
-  const pathLike = item.slug || item.urlKey || item._path || item.path;
-  if (pathLike) {
-    const last = String(pathLike).split('/').filter(Boolean).pop();
+  const path = item._path;
+  if (path) {
+    const last = String(path).split('/').filter(Boolean).pop();
     if (last) return toClassName(last);
   }
   const name = (item.name || item.title || '').replace(/^securbank\s+/i, '');
@@ -82,7 +86,7 @@ function buildCard(item) {
   const imgSrc = item.cardImage?._publishUrl || item.cardImage?.url
     // eslint-disable-next-line no-underscore-dangle -- AEM asset delivery field name
     || item.image?._publishUrl || item.image?.url;
-  const href = `/credit-cards/${slugFor(item)}`;
+  const href = `/cards/${slugFor(item)}`;
 
   const card = document.createElement('div');
   card.className = 'card-list-item glass-card';
