@@ -53,6 +53,9 @@ const IMS_ORG = '28260E2056581D3B7F000101@AdobeOrg';
 
 const LAUNCH_URLS = ['https://assets.adobedtm.com/7bd07c5f18b6/bb012c95ae42/launch-f4bf288cfb30.min.js'];
 
+// Populated by loadEager once martechEager resolves; read by applyTargetCTAVariant.
+let eagerPropositions = [];
+
 // ── Analytics helpers ─────────────────────────────────────────────────────────
 
 /**
@@ -81,33 +84,21 @@ function pushCardContext() {
 }
 
 /**
- * Reads the Target proposition returned for this page (cached from the eager
- * propositionFetch) and swaps CTA button text if Variant B was served.
- *
- * Uses event type 'decisioning.propositionFetch' so alloy does NOT send a
- * second analytics page-view hit — it only retrieves the cached decision.
+ * Reads the Target proposition captured during the eager phase and swaps CTA
+ * button text if Variant B was served.  No second alloy call is made — alloy
+ * deduplicates personalization requests within a page session and would return
+ * empty propositions on a second sendEvent.
  */
-async function applyTargetCTAVariant() {
-  try {
-    const result = await window.alloy?.('sendEvent', {
-      type: 'decisioning.propositionFetch',
-      renderDecisions: false,
-    });
-    // eslint-disable-next-line no-console
-    console.log('[target] propositions:', JSON.stringify(result?.propositions));
-    const allItems = result?.propositions?.flatMap((p) => p.items ?? []) ?? [];
-    // Alloy may nest content under data.content (JSON offer) or flatten into data
-    const item = allItems.find((i) => i.data?.content?.ctaText || i.data?.ctaText);
-    const offer = item?.data?.content ?? item?.data;
-    if (!offer?.ctaText) return;
-    document.querySelectorAll('a.button[href$="/join"]').forEach((btn) => {
-      const text = btn.classList.contains('accent') ? (offer.ctaHeroText ?? offer.ctaText) : offer.ctaText;
-      btn.textContent = text;
-    });
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('[target] error:', e);
-  }
+function applyTargetCTAVariant() {
+  const allItems = eagerPropositions.flatMap((p) => p.items ?? []);
+  const item = allItems.find((i) => i.data?.content?.ctaText || i.data?.ctaText);
+  const offer = item?.data?.content ?? item?.data;
+  if (!offer?.ctaText) return;
+  document.querySelectorAll('a.button[href$="/join"]').forEach((btn) => {
+    btn.textContent = btn.classList.contains('accent')
+      ? (offer.ctaHeroText ?? offer.ctaText)
+      : offer.ctaText;
+  });
 }
 
 /**
@@ -342,7 +333,9 @@ async function loadEager(doc) {
     // Run martechEager (applies Target propositions) concurrently with LCP section
     // load so personalization doesn't add to the critical path beyond 1 s timeout.
     await Promise.all([
-      martechLoadedPromise.then(martechEager),
+      martechLoadedPromise.then(martechEager).then((r) => {
+        eagerPropositions = r?.propositions ?? [];
+      }),
       loadSection(main.querySelector('.section'), waitForFirstImage),
     ]);
   }
