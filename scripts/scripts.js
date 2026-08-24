@@ -12,6 +12,11 @@ import {
   buildBlock,
   toClassName,
 } from './aem.js';
+import {
+  initMartech,
+  martechEager,
+  martechLazy,
+} from '../plugins/martech/src/index.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -37,6 +42,91 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
     createScript: (input) => input,
   });
 }
+
+// ── Martech config ────────────────────────────────────────────────────────────
+
+// Replace DATASTREAM_ID after creating the datastream in AEP (Experience Platform
+// → Data Collection → Datastreams). Add the Analytics and Target services, then
+// paste the generated Datastream ID here.
+const DATASTREAM_ID = 'b7cb93b5-a5b2-4bfb-b013-c666eb5c12c1';
+const IMS_ORG = '28260E2056581D3B7F000101@AdobeOrg';
+
+const LAUNCH_URLS = ['https://assets.adobedtm.com/7bd07c5f18b6/bb012c95ae42/launch-f4bf288cfb30.min.js'];
+
+// ── Analytics helpers ─────────────────────────────────────────────────────────
+
+/**
+ * Reads the JSON-LD CreditCard schema injected by the edge function and pushes
+ * card metadata to the ACDL before the first alloy event fires so the data
+ * is included in the eager page-view hit.
+ *
+ * The data layer is still a plain array at this point (ACDL loads in martechLazy);
+ * pushes made here are replayed by ACDL once it initialises.
+ */
+function pushCardContext() {
+  const ldScript = document.querySelector('script[type="application/ld+json"]');
+  if (!ldScript) return;
+  try {
+    const schema = JSON.parse(ldScript.textContent);
+    if (schema['@type'] !== 'CreditCard') return;
+    window.adobeDataLayer ||= [];
+    window.adobeDataLayer.push({
+      card: {
+        name: schema.name,
+        url: window.location.href,
+        slug: window.location.pathname.split('/').pop(),
+      },
+    });
+  } catch { /* ignore malformed LD+JSON */ }
+}
+
+/**
+ * Reads the Target proposition returned for this page (cached from the eager
+ * propositionFetch) and swaps CTA button text if Variant B was served.
+ *
+ * Uses event type 'decisioning.propositionFetch' so alloy does NOT send a
+ * second analytics page-view hit — it only retrieves the cached decision.
+ */
+async function applyTargetCTAVariant() {
+  try {
+    const result = await window.alloy?.('sendEvent', {
+      type: 'decisioning.propositionFetch',
+      renderDecisions: false,
+      decisionScopes: ['__view__'],
+    });
+    const offer = result?.propositions
+      ?.flatMap((p) => p.items ?? [])
+      .find((i) => i.data?.ctaText)?.data;
+    if (!offer) return;
+    document.querySelectorAll('a.button.primary[href="/join"]').forEach((btn) => {
+      btn.textContent = offer.ctaText;
+    });
+    document.querySelectorAll('a.button.accent[href="/join"]').forEach((btn) => {
+      btn.textContent = offer.ctaHeroText ?? offer.ctaText;
+    });
+  } catch { /* default content shows on any error */ }
+}
+
+/**
+ * Wires click-tracking on all apply CTA links so Analytics captures which
+ * variant the visitor clicked and on which card.
+ */
+function wireCardCTATracking() {
+  const cardName = document.querySelector('h1')?.textContent?.trim() ?? document.title;
+  document.querySelectorAll('a[href="/join"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      // Push to ACDL only — the Launch rule handles the alloy sendEvent.
+      // Pushing directly avoids a double-fire from both this function and the rule.
+      window.adobeDataLayer?.push({
+        event: 'web.webInteraction.linkClicks',
+        web: { webInteraction: { name: btn.textContent.trim(), type: 'other', URL: btn.href } },
+        card: { name: cardName },
+      });
+    }, { once: true });
+  });
+}
+
+// ── EDS page scaffolding ──────────────────────────────────────────────────────
 
 /**
  * load fonts.css and set a session storage flag
@@ -220,11 +310,38 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  const isCardPage = window.location.pathname.startsWith('/cards/');
+
+  // Push card metadata from the JSON-LD schema (injected by the edge function)
+  // into the ACDL before the first alloy event so Analytics has full page context.
+  if (isCardPage) pushCardContext();
+
+  // Start martech initialisation. Personalization (Target) only runs on card
+  // detail pages where the A/B activity is active — other pages pay no Target latency.
+  const martechLoadedPromise = initMartech(
+    {
+      datastreamId: DATASTREAM_ID,
+      orgId: IMS_ORG,
+      // For production, replace 'in' with your CMP's consent resolution.
+      defaultConsent: 'in',
+    },
+    {
+      personalization: isCardPage,
+      launchUrls: LAUNCH_URLS,
+    },
+  );
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), waitForFirstImage);
+    // Run martechEager (applies Target propositions) concurrently with LCP section
+    // load so personalization doesn't add to the critical path beyond 1 s timeout.
+    await Promise.all([
+      martechLoadedPromise.then(martechEager),
+      loadSection(main.querySelector('.section'), waitForFirstImage),
+    ]);
   }
 
   try {
@@ -254,6 +371,16 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadFooter(doc.querySelector('footer'));
+
+  // Loads ACDL, wires up alloy ↔ ACDL bridge, and fires the analytics page view.
+  await martechLazy();
+
+  if (window.location.pathname.startsWith('/cards/')) {
+    // Non-blocking: reads the cached Target proposition and swaps CTA copy for Variant B.
+    applyTargetCTAVariant();
+    // Wire apply-button click tracking after all sections are decorated.
+    wireCardCTATracking();
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();

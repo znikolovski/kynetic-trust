@@ -161,7 +161,7 @@ export default async function handler(request, context) {
       schemaPromise = buildListSchema(url.origin);
     } else if (url.pathname.startsWith('/cards/')) {
       const slug = url.pathname.split('/').filter(Boolean).pop();
-      if (slug) schemaPromise = buildDetailSchema(slug, request.url);
+      if (slug) schemaPromise = buildDetailSchema(slug, `${PROVIDER.url}${url.pathname}`);
     }
 
     // Fetch placeholders, read HTML body, and fetch structured data in parallel.
