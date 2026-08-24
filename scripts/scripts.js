@@ -94,7 +94,7 @@ async function applyTargetCTAVariant() {
       renderDecisions: false,
     });
     // eslint-disable-next-line no-console
-    console.debug('[target] propositions:', JSON.stringify(result?.propositions));
+    console.log('[target] propositions:', JSON.stringify(result?.propositions));
     const allItems = result?.propositions?.flatMap((p) => p.items ?? []) ?? [];
     // Alloy may nest content under data.content (JSON offer) or flatten into data
     const item = allItems.find((i) => i.data?.content?.ctaText || i.data?.ctaText);
@@ -106,7 +106,7 @@ async function applyTargetCTAVariant() {
     });
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.debug('[target] error:', e);
+    console.log('[target] error:', e);
   }
 }
 
