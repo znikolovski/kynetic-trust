@@ -90,12 +90,12 @@ function pushCardContext() {
 async function applyTargetCTAVariant() {
   try {
     const result = await window.alloy?.('sendEvent', {
+      type: 'decisioning.propositionFetch',
       renderDecisions: false,
-      decisionScopes: ['target-global-mbox'],
     });
     const offer = result?.propositions
       ?.flatMap((p) => p.items ?? [])
-      .find((i) => i.data?.ctaText)?.data;
+      .find((i) => i.data?.content?.ctaText)?.data?.content;
     if (!offer) return;
     document.querySelectorAll('a.button.primary[href="/join"]').forEach((btn) => {
       btn.textContent = offer.ctaText;
