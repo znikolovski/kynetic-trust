@@ -327,7 +327,7 @@ async function loadEager(doc) {
       defaultConsent: 'in',
     },
     {
-      personalization: isCardPage,
+      personalization: true,
       launchUrls: LAUNCH_URLS,
     },
   );
@@ -375,10 +375,11 @@ async function loadLazy(doc) {
   // Loads ACDL, wires up alloy ↔ ACDL bridge, and fires the analytics page view.
   await martechLazy();
 
+  // Apply any Target propositions and wire CTA tracking on all pages.
+  // applyTargetCTAVariant is a no-op when no proposition was served;
+  // wireCardCTATracking only attaches listeners to elements that exist.
+  applyTargetCTAVariant();
   if (window.location.pathname.startsWith('/cards/')) {
-    // Non-blocking: reads the cached Target proposition and swaps CTA copy for Variant B.
-    applyTargetCTAVariant();
-    // Wire apply-button click tracking after all sections are decorated.
     wireCardCTATracking();
   }
 
