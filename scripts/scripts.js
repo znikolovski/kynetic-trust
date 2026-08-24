@@ -93,17 +93,21 @@ async function applyTargetCTAVariant() {
       type: 'decisioning.propositionFetch',
       renderDecisions: false,
     });
-    const offer = result?.propositions
-      ?.flatMap((p) => p.items ?? [])
-      .find((i) => i.data?.content?.ctaText)?.data?.content;
-    if (!offer) return;
-    document.querySelectorAll('a.button.primary[href="/join"]').forEach((btn) => {
-      btn.textContent = offer.ctaText;
+    // eslint-disable-next-line no-console
+    console.debug('[target] propositions:', JSON.stringify(result?.propositions));
+    const allItems = result?.propositions?.flatMap((p) => p.items ?? []) ?? [];
+    // Alloy may nest content under data.content (JSON offer) or flatten into data
+    const item = allItems.find((i) => i.data?.content?.ctaText || i.data?.ctaText);
+    const offer = item?.data?.content ?? item?.data;
+    if (!offer?.ctaText) return;
+    document.querySelectorAll('a.button[href$="/join"]').forEach((btn) => {
+      const text = btn.classList.contains('accent') ? (offer.ctaHeroText ?? offer.ctaText) : offer.ctaText;
+      btn.textContent = text;
     });
-    document.querySelectorAll('a.button.accent[href="/join"]').forEach((btn) => {
-      btn.textContent = offer.ctaHeroText ?? offer.ctaText;
-    });
-  } catch { /* default content shows on any error */ }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.debug('[target] error:', e);
+  }
 }
 
 /**
