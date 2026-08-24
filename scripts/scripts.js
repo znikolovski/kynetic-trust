@@ -90,9 +90,8 @@ function pushCardContext() {
 async function applyTargetCTAVariant() {
   try {
     const result = await window.alloy?.('sendEvent', {
-      type: 'decisioning.propositionFetch',
       renderDecisions: false,
-      decisionScopes: ['__view__'],
+      decisionScopes: ['target-global-mbox'],
     });
     const offer = result?.propositions
       ?.flatMap((p) => p.items ?? [])
