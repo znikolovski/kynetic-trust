@@ -335,7 +335,7 @@ async function loadEager(doc) {
     await Promise.all([
       martechLoadedPromise.then(martechEager).then((r) => {
         eagerPropositions = r?.propositions ?? [];
-      }),
+      }).catch(() => {}),
       loadSection(main.querySelector('.section'), waitForFirstImage),
     ]);
   }
@@ -369,7 +369,7 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   // Loads ACDL, wires up alloy ↔ ACDL bridge, and fires the analytics page view.
-  await martechLazy();
+  await martechLazy().catch(() => {});
 
   // Apply any Target propositions and wire CTA tracking on all pages.
   // applyTargetCTAVariant is a no-op when no proposition was served;
