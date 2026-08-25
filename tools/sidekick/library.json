@@ -61,7 +61,7 @@
     {
       "name": "Pull Quote",
       "path": "/tools/sidekick/blocks/pull-quote",
-      "tags": "content",
+      "tags": "editorial",
       "description": "Editorial blockquote with quote text and attribution"
     },
     {
