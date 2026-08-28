@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Required for correct iframe sizing — AEM section margins inflate shadow body */
+main > div,
+main > .section,
+main > .section:first-of-type {
+  margin: 0;
+}
+main > .section > div {
+  max-width: none;
+  padding: 0;
+}
+body {
+  overflow: auto;
+}
+
+main .get-product-details {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 8px;
+  max-width: 620px;
+}
+
+main .get-product-details .gpd-card {
+  display: flex;
+  flex-direction: row;
+  height: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+main .get-product-details .gpd-image {
+  flex: 0 0 260px;
+  height: 100%;
+  overflow: hidden;
+}
+
+main .get-product-details .gpd-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+main .get-product-details .gpd-content {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+main .get-product-details .gpd-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: inherit;
+}
+
+main .get-product-details .gpd-title {
+  margin: 0 !important;
+  font-size: 18px !important;
+  line-height: 1.25 !important;
+  font-weight: 700;
+  color: inherit;
+}
+
+main .get-product-details .gpd-desc {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  opacity: 0.78;
+  color: inherit;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+main .get-product-details .gpd-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: inherit;
+}
+
+main .get-product-details .gpd-cta {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #555555;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+main .get-product-details .gpd-cta:hover {
+  opacity: 0.88;
+}
+
+main .get-product-details .gpd-empty {
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-color, #333);
+}
+
+@media (max-width: 480px) {
+  main .get-product-details .gpd-card {
+    flex-direction: column;
+    height: auto;
+  }
+  main .get-product-details .gpd-image {
+    flex: 0 0 160px;
+    width: 100%;
+  }
+}
+
+/* Dark theme — dim outer widget background only; keep palette-derived card bg */
+@media (prefers-color-scheme: dark) {
+  main .get-product-details { background: #111; }
+  main .get-product-details .gpd-empty { color: #eee; }
+}
+body.dark main .get-product-details { background: #111; }
+body.dark main .get-product-details .gpd-empty { color: #eee; }
