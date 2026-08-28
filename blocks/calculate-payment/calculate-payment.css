@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Required for correct iframe sizing — AEM section margins inflate shadow body */
+main > div,
+main > .section,
+main > .section:first-of-type {
+  margin: 0;
+}
+main > .section > div {
+  max-width: none;
+  padding: 0;
+}
+body {
+  overflow: auto;
+}
+
+main .calculate-payment {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+main .calculate-payment .calculate-payment-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+main .calculate-payment .calculate-payment-hero {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+}
+
+main .calculate-payment .calculate-payment-header {
+  padding: 12px 16px;
+}
+
+main .calculate-payment .calculate-payment-title {
+  margin: 0 0 4px !important;
+  font-size: 15px !important;
+  font-weight: 700;
+  line-height: 1.3 !important;
+}
+
+main .calculate-payment .calculate-payment-desc {
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  opacity: 0.75;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+main .calculate-payment .calculate-payment-form {
+  padding: 14px 16px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+main .calculate-payment .calculate-payment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+main .calculate-payment .calculate-payment-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.6;
+  color: #333;
+}
+
+main .calculate-payment .calculate-payment-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  box-sizing: border-box;
+}
+
+main .calculate-payment .calculate-payment-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+}
+
+main .calculate-payment .calculate-payment-cta {
+  margin: 12px 0 4px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+main .calculate-payment .calculate-payment-cta:hover {
+  opacity: 0.88;
+}
+
+main .calculate-payment .calculate-payment-result {
+  margin: 4px 16px 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #eff4ff;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+main .calculate-payment .calculate-payment-result-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #2563eb;
+}
+
+main .calculate-payment .calculate-payment-result-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+}
+
+main .calculate-payment .calculate-payment-result-sub {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  main .calculate-payment .calculate-payment-card { background: #1c1c1e; }
+  main .calculate-payment .calculate-payment-label { color: #d1d5db; }
+  main .calculate-payment .calculate-payment-input {
+    background: #1e1e1e;
+    color: #f3f4f6;
+    border-color: #4b5563;
+  }
+  main .calculate-payment .calculate-payment-result { background: #1e293b; }
+  main .calculate-payment .calculate-payment-result-value { color: #f3f4f6; }
+  main .calculate-payment .calculate-payment-result-label { color: #60a5fa; }
+  main .calculate-payment .calculate-payment-result-sub { color: #cbd5e1; }
+}
+
+body.dark main .calculate-payment .calculate-payment-card { background: #1c1c1e; }
+body.dark main .calculate-payment .calculate-payment-label { color: #d1d5db; }
+body.dark main .calculate-payment .calculate-payment-input {
+  background: #1e1e1e;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+body.dark main .calculate-payment .calculate-payment-result { background: #1e293b; }
+body.dark main .calculate-payment .calculate-payment-result-value { color: #f3f4f6; }
+body.dark main .calculate-payment .calculate-payment-result-label { color: #60a5fa; }
+body.dark main .calculate-payment .calculate-payment-result-sub { color: #cbd5e1; }
