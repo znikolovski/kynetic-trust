@@ -194,13 +194,12 @@ function renderCalculator(block, plan, bridge, initialResult) {
 
   // CTA
   const btn = document.createElement('button');
-  btn.type = 'submit';
+  btn.type = 'button';
   btn.className = 'calculate-payment-cta';
   btn.textContent = 'Calculate Payment';
   form.appendChild(btn);
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  const calculate = () => {
     const vals = {
       home_value: parseFloat(inputs.home_value.value),
       down_payment: parseFloat(inputs.down_payment.value),
@@ -217,6 +216,12 @@ function renderCalculator(block, plan, bridge, initialResult) {
       return;
     }
     showResult(computePayment(vals));
+  };
+
+  btn.addEventListener('click', calculate);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calculate();
   });
 
   block.appendChild(card);
